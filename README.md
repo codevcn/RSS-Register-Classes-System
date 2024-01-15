@@ -11,25 +11,21 @@
 
 ## Công nghệ sử dụng: <a name="used-techs"></a>
 - Ngôn ngữ lập trình:
-  - JavaScript (Nodejs)
+  - Java (Spring Framework)
 - Trình quản lí thư viện bên thứ 3:
-  - npm
+  - Maven (mvn)
 - Server:
-  - express.js
+  - Spring MVC
 - Client:
   - *Unkown*
 - Hệ quản trị cơ sở dữ liệu:
-  - *Unkown*
+  - NoSQL (MongoDB)
 
 ## Cấu trúc thư mục trong dự án: <a name="folder-structure"></a>
 
 ### Các thư mục: <a name="folder-structure-folders"></a>
 - `src`:
   - Đây là thư mục chứa toàn bộ code của dự án, các việc làm như viết code, tạo thư mục mới, tạo file mới, vân vân... đều được thực hiện bên trong thư mục src này
-- `assets`:
-  - Đây là thư mục chứa tất cả ảnh và video cho dự án này.
-  - Ảnh thì để trong thư mục images.
-  - Video để trong thư mục videos
 - `configs`:
   - Đây là thư mục chứa các file dùng để cấu hình cho mọi thứ trong dự án, ví dụ: cấu hình kết nối đến DB, cấu hình để sử dụng thư viện bên thứ 3, vân vân...
 - `controllers`:
@@ -49,30 +45,23 @@
   - Người làm Frontend sẽ để các file UI vào thư mục này
 
 ### Các file: <a name="folder-structure-files"></a>
-- file `index.js` ở thư mục src:
+- file `App.java` ở thư mục src:
   - Đây là file gốc của toàn bộ dự án, file này chịu trách nhiệm chạy dự án, tất cả các file ở các thư mục trên sẽ được import vào file này để chạy.
   - File index.js này có thể được xem là file gốc rễ của dự án, là file cao nhất của dự án
 - file `.env`:
   - Đây là file chứa các dữ liệu nhạy cảm của dự án, ví dụ như thông tin đăng nhập vào cơ sở dữ liệu, các khóa bí mật của thư viện bên thứ 3, vân vân...
-- file `package.json`:
+- file `pom.xml`:
   - Đây là hồ sơ của dự án (bộ mặt của dự án), tức là file khai báo các thư viện được sử dụng trong dự án, mô tả cho dự án, tên dự án, phiên bản dự án, các cấu hình để chạy dự án trên môi trường development hoặc production, vân vân...
-- file `.prettierrc.json`:
-  - Đây là file dùng để format code cho dự án, các thành viên trong team sẽ dùng file này để hướng đến một định dạng code chung, tránh tình trạng mỗi người code 1 format khác nhau, ví dụ: thụt lề trái là 2 đơn vị space, có hoặc không sử dụng dấu chấm phẩy ở cuối dòng lệnh, vân vân...
-- file `.eslintrc.json`:
-  - Đây là file dùng để check code khi viết.
-  - Lí do dùng file này: thông thường các trình viết code sẽ dựa vào một gói (trên vscode thì thường là extension) để check lỗi viết code (như là dùng biến chưa được khởi tạo trước đó, ...), kiểu check code này còn gọi là kiểm tra tĩnh, nhưng javascript là ngôn ngữ biên dịch động nên kiểu check này ko khả dụng, vì vậy nên ta sẽ mượn bọn eslint này để check code theo kiểu tĩnh cho javascript
-- file `.prettierignore`:
-  - Dùng để loại trừ một số file ra khỏi việc định dạng code chung của bọn prettier
-- file `nodemon.json`:
-  - Đây là file dùng để cấu hình cho quá trình "watch" khi chạy dự án (watch là 1 quá trình theo dõi sự thay đổi của các file trong dự án khi người viết code thực hiện thay đổi 1 file nào đó và save file, thì dự án được khởi động lại 1 cách tự động)
-  - Dùng quá trình "watch" để khỏi phải khởi động lại dự án 1 cách thủ công
 
 ## Quy trình chạy dự án: <a name="app-running-procedure"></a>
-- Khi mọi người kéo code mới nhất từ github về máy, chạy lệnh sau trong CLI và đợi hệ thống cài xong các phụ thuộc:
+Khi mọi người kéo code mới nhất từ github về máy, chạy 2 lệnh sau trong CLI (cmd hoặc terminal) và đợi Maven cài xong các phụ thuộc và chạy app:
+- cmd:
 ```
-npm i
+cd ../RSS
+run.cmd
 ```
-- Sau khi hệ thống cài xong các phụ thuộc thì chạy lệnh sau trong CLI để tiến hành chạy dự án tại local:
+  - terminal:
 ```
-npm run dev
+cd ../RSS
+./run
 ```
