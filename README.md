@@ -37,12 +37,9 @@ Webstie đăng ký môn học của trường (uis)
 - `models`:
   - Đây là thư mục chứa các file model (các thực thể cho các đối tượng trong cơ sở dữ liệu)
 - `services`:
-  - Đây là thư mục chứa các class và method phục vụ cho các nghiệp vụ riêng của nó
+  - Đây là thư mục chứa các class và method phục vụ cho từng nghiệp vụ cụ thể của ứng dụng
 - `utils`:
   - Đây là thư mục chứa các file dùng chung, tức là các file này khai báo các hàm hoặc class để tái sử dụng ở nhiều nơi khác nhau trong dự án 
-- `views` (thư mục này có thể bị xóa hoặc thay đổi trong tương lai):
-  - Đây là thư mục chứa tất cả thành phần UI của dự án này bao gồm các view, các component, và hơn thế nữa...
-  - Người làm Frontend sẽ để các file UI vào thư mục này
 
 ### Các file: <a name="folder-structure-files"></a>
 - file `App.java`:
@@ -59,11 +56,11 @@ Webstie đăng ký môn học của trường (uis)
 Khi mọi người kéo code mới nhất từ github về máy, chạy 2 lệnh sau trong CLI (cmd hoặc terminal) và đợi Maven cài xong các phụ thuộc và chạy app:
 - cmd:
 ```
-cd ../RSS-Register-Classes-System
+cd ./RSS-Register-Classes-System
 run.cmd
 ```
   - terminal:
 ```
-cd ../RSS-Register-Classes-System
+cd ./RSS-Register-Classes-System
 ./run
 ```
