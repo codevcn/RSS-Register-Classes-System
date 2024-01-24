@@ -4,6 +4,7 @@
 
 ## Mục lục:
 - [Công nghệ sử dụng](#used-techs)
+- [Mẫu giao diện người dùng](#ui-template)
 - [Cấu trúc thư mục trong dự án](#folder-structure)
   - [Các thư mục](#folder-structure-folders)
   - [Các file](#folder-structure-files)
@@ -21,8 +22,8 @@
 - Hệ quản trị cơ sở dữ liệu:
   - SQL Server
 
-## Mẫu Giao diện người dùng:
-Webstie đăng ký môn học của trường
+## Mẫu Giao diện người dùng: <a name="ui-template"></a>
+Webstie đăng ký môn học của trường (uis)
 
 ## Cấu trúc thư mục trong dự án: <a name="folder-structure"></a>
 
