@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HTMLController {
 
     @Value("${spring.application.name}")
-    String appName;
+    private String appName;
 
     @GetMapping("/ui")
     public String homePage(Model model) {

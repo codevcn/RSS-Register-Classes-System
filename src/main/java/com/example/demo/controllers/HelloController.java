@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.configs.MyEnv;
+import com.example.demo.configs.EnvConfig;
 import com.example.demo.services.HelloService;
 import com.example.demo.utils.RequestBodyDTO.*;
 import com.example.demo.utils.ResponseBodyDTO.*;
@@ -21,13 +21,16 @@ public class HelloController {
     private final AtomicLong counter = new AtomicLong();
 
     @Autowired
-    HelloService helloService;
+    private HelloService helloService;
 
     @Autowired
-    MyEnv myEnv;
+    private EnvConfig myEnv;
 
     @GetMapping("greeting")
-    public ResBodyOneDTO greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public ResBodyOneDTO greeting(
+        @RequestParam(value = "myData") String data,
+        @RequestParam(value = "myName", required = true) String name
+    ) {
         return new ResBodyOneDTO(counter.incrementAndGet(), String.format(template, name), 20);
     }
 
@@ -39,7 +42,7 @@ public class HelloController {
 
     @GetMapping("lalala-okay")
     public String todo() {
-        return ">>> This is money???";
+        return helloService.getHello();
     }
 
     @PostMapping("send")
@@ -47,13 +50,13 @@ public class HelloController {
         System.out.printf("\n>>> ( \n");
         System.out.print(reqBody);
         System.out.printf("\n>>> ) \n");
-        return new ResBodyOneDTO(reqBody.reqId(), reqBody.reqContent(), 40);
+        return new ResBodyOneDTO(reqBody.myData(), reqBody.myName(), 40);
     }
 
     @DeleteMapping
     public Success delete() {
         System.out.printf(">>> env 1 info: %s \n", myEnv.getRssEnv1());
-        System.out.printf(">>> env 2 info: %s \n", myEnv.getRssEnv2());
+        System.out.printf(">>> env 2 info: %s \n", myEnv.getRssEnv2() + 55);
         System.out.printf(">>> env 3 info: %s \n", myEnv.getRssEnv3());
         return new Success();
     }

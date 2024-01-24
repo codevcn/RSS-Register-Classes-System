@@ -1,0 +1,117 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            margin: 20px;
+            padding: 20px;
+            background-color: pink;
+            border: 2px black solid;
+            font-weight: bold;
+        }
+
+        .notify-container {
+            margin: 20px;
+        }
+
+        .notify {
+            padding: 20px;
+            border: 2px black solid;
+            font-weight: bold;
+        }
+
+        .notify.success {
+            background-color: green;
+        }
+
+        .notify.fail {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        oke VCN
+    </div>
+    <button class="btn" onclick="todo_api('GET')">
+        get api
+    </button>
+    <button class="btn" onclick="todo_api('POST')">
+        post api
+    </button>
+    <button class="btn" onclick="todo_api('DELETE')">
+        delete api
+    </button>
+    <div class="notify-container"></div>
+    <script>
+        const todo_api = (type) => {
+            // URL của endpoint bạn muốn gửi yêu cầu đến
+            let apiUrl
+            if (type === 'POST') {
+                apiUrl = 'http://127.0.0.1:8080/api/send'
+            } else if (type === 'GET') {
+                apiUrl = 'http://127.0.0.1:8080/api/'
+            } else {
+                apiUrl = 'http://127.0.0.1:8080/api/'
+            }
+
+            // Dữ liệu bạn muốn gửi
+            const postData = {
+                reqIds: 'request ID',
+                reqContents: 'some text...'
+            }
+
+            // Cấu hình cho yêu cầu
+            const requestOptions = type === 'POST' ? {
+                method: type,
+                headers: {
+                    'Content-Type': 'application/json', // Đặt kiểu dữ liệu là JSON
+                },
+                body: JSON.stringify(postData) // Chuyển đối tượng thành chuỗi JSON
+            } : {
+                method: type
+            }
+
+            // Thực hiện yêu cầu sử dụng API Fetch
+            fetch(apiUrl, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`)
+                    }
+                    return response.json() // Đọc và trả về phản hồi dưới dạng JSON
+                })
+                .then(data => {
+                    console.log('>>> fetch success >>>', data)
+
+                    const parentDiv = document.querySelector('.notify-container')
+                    while (parentDiv.firstChild) {
+                        parentDiv.removeChild(parentDiv.firstChild)
+                    }
+                    const childDiv = document.createElement('div')
+                    childDiv.textContent = 'fetch success !!!'
+                    childDiv.classList.add('notify')
+                    childDiv.classList.add('success')
+                    parentDiv.appendChild(childDiv)
+                })
+                .catch(error => {
+                    console.error('>>> fetch fail >>>', error)
+
+                    const parentDiv = document.querySelector('.notify-container')
+                    while (parentDiv.firstChild) {
+                        parentDiv.removeChild(parentDiv.firstChild)
+                    }
+                    const childDiv = document.createElement('div')
+                    childDiv.textContent = 'fetch fail ???'
+                    childDiv.classList.add('notify')
+                    childDiv.classList.add('fail')
+                    parentDiv.appendChild(childDiv)
+                })
+        }
+    </script>
+</body>
+
+</html>
