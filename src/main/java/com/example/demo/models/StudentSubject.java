@@ -16,6 +16,7 @@ public class StudentSubject {
 
     @Id
     private String subjectID;
+    private String registerSessionID;
 
     public StudentSubject() {}
 
@@ -38,5 +39,13 @@ public class StudentSubject {
 
     public void setSubjectID(String subjectID) {
         this.subjectID = subjectID;
+    }
+
+    public String getRegisterSessionID() {
+        return registerSessionID;
+    }
+
+    public void setRegisterSessionID(String registerSessionID) {
+        this.registerSessionID = registerSessionID;
     }
 }

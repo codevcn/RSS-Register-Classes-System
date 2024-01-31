@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -17,6 +18,9 @@ public class Student {
     private String birthday;
     private String gender;
     private String departmentID;
+
+    @Column(nullable = true)
+    private String account;
 
     public Student() {}
 
@@ -92,5 +96,13 @@ public class Student {
 
     public void setDepartmentID(String departmentID) {
         this.departmentID = departmentID;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 }

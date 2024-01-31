@@ -12,6 +12,7 @@ public class Department {
     private String id;
 
     private String name;
+    private String createdAt;
 
     public Department() {}
 
@@ -34,5 +35,13 @@ public class Department {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

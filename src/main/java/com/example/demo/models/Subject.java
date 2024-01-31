@@ -17,6 +17,7 @@ public class Subject {
     private String departmentID;
     private String beginDate;
     private String endDate;
+    private int slot;
 
     public Subject() {}
 
@@ -92,5 +93,13 @@ public class Subject {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public void setSlot(int slot) {
+        this.slot = slot;
     }
 }

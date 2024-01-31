@@ -1,10 +1,7 @@
 package com.example.demo.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,27 +9,42 @@ import jakarta.persistence.Table;
 public class Account {
 
     @Id
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IDcard")
-    private String IDcard;
+    private String username;
 
     private String password;
     private String role;
+    private String createdAt;
 
     public Account() {}
 
     public Account(String iDcard, String password, String role) {
-        IDcard = iDcard;
+        username = iDcard;
         this.password = password;
         this.role = role;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public String getIDcard() {
-        return IDcard;
+        return username;
     }
 
     public void setIDcard(String iDcard) {
-        IDcard = iDcard;
+        username = iDcard;
     }
 
     public String getPassword() {

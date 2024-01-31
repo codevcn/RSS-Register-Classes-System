@@ -1,11 +1,11 @@
 package com.example.demo.controllers;
 
-import com.example.demo.configs.EnvConfig;
 import com.example.demo.services.HelloService;
 import com.example.demo.utils.RequestBodyDTO.*;
 import com.example.demo.utils.ResponseBodyDTO.*;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ public class HelloController {
     private HelloService helloService;
 
     @Autowired
-    private EnvConfig myEnv;
+    private Environment envConfig;
 
     @GetMapping("greeting")
     public ResBodyOneDTO greeting(
@@ -55,9 +55,10 @@ public class HelloController {
 
     @DeleteMapping
     public Success delete() {
-        System.out.printf(">>> env 1 info: %s \n", myEnv.getRssEnv1());
-        System.out.printf(">>> env 2 info: %s \n", myEnv.getRssEnv2() + 55);
-        System.out.printf(">>> env 3 info: %s \n", myEnv.getRssEnv3());
+        System.out.printf(">>> env 1 info: %s \n", envConfig.getProperty("self-def.rssEnv1"));
+        System.out.printf(">>> env 1 info: %s \n", envConfig.getProperty("self-def.rssEnv2") + 777);
+        System.out.printf(">>> env 1 info: %s \n", envConfig.getProperty("self-def.rssEnv3"));
+        System.out.printf(">>> env 1 info: %s \n", envConfig.getProperty("self-def.rssEnv4"));
         return new Success();
     }
 

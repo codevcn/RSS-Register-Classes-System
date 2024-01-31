@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -14,6 +15,10 @@ public class Admin {
     private String fullName;
     private String birthday;
     private String gender;
+    private String createdAt;
+
+    @Column(nullable = true)
+    private String account;
 
     public Admin() {}
 
@@ -22,6 +27,22 @@ public class Admin {
         this.fullName = fullName;
         this.birthday = birthday;
         this.gender = gender;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getIDcard() {
