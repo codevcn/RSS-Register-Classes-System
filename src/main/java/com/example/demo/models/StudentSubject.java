@@ -16,6 +16,7 @@ public class StudentSubject {
 
     @Id
     private String subjectID;
+
     private String registerSessionID;
 
     public StudentSubject() {}

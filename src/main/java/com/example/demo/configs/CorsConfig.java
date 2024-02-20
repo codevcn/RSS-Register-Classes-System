@@ -20,6 +20,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry
             .addMapping("/**")
             .allowedOrigins("http://127.0.0.1:" + envConfig.getProperty("self-def.clientPort"))
+            .allowCredentials(true)
             .allowedMethods("POST", "GET", "PUT", "DELETE");
     }
 }
