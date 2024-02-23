@@ -3,11 +3,12 @@ package com.example.demo.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Date;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,31 +22,26 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "Admin")
-public class Admin {
+@Table(name = "RegisterReceipt")
+public class RegisterReceipt {
 
     @Id
-    @Column(nullable = false, length = 12)
-    private String idcard;
+    @Column(nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false, length = 30)
-    private String fullName;
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "studentID", nullable = false)
+    @JsonBackReference
+    private Student student;
 
     @Column(nullable = false)
-    private Date birthday;
+    private Long totalCredits;
 
-    @Column(nullable = false, length = 10)
-    private String gender;
+    @Column(nullable = false)
+    private Long totalPayAmount;
 
     @Column(nullable = false)
     private Timestamp createdAt;
-
-    @Column(nullable = false)
-    private Timestamp updatedAt;
-
-    @ToString.Exclude
-    @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "username", nullable = true)
-    @JsonBackReference
-    private Account account;
 }

@@ -1,96 +1,77 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Table(name = "Teacher")
 public class Teacher {
 
     @Id
-    private String IDcard;
+    @Column(nullable = false, length = 12)
+    private String id;
 
+    @Column(nullable = false, length = 15)
     private String phone;
-    private String createdAt;
+
+    @Column(nullable = false, length = 30)
     private String fullName;
-    private String birthday;
+
+    @Column(nullable = false)
+    private Date birthday;
+
+    @Column(nullable = false, length = 10)
     private String gender;
-    private String departmentID;
 
-    public Teacher() {}
+    @Column(nullable = false)
+    private Timestamp createdAt;
 
-    public Teacher(
-        String iDcard,
-        String phone,
-        String createdAt,
-        String fullName,
-        String birthday,
-        String gender,
-        String departmentID
-    ) {
-        IDcard = iDcard;
-        this.phone = phone;
-        this.createdAt = createdAt;
-        this.fullName = fullName;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.departmentID = departmentID;
-    }
+    @Column(nullable = false)
+    private Timestamp updatedAt;
 
-    public String getIDcard() {
-        return IDcard;
-    }
+    @Column(nullable = false)
+    private Boolean deleted;
 
-    public void setIDcard(String iDcard) {
-        IDcard = iDcard;
-    }
+    @ManyToMany
+    @JoinTable(
+        name = "TeacherMajor",
+        joinColumns = @JoinColumn(name = "teacherID"),
+        inverseJoinColumns = @JoinColumn(name = "majorID")
+    )
+    @JsonManagedReference
+    private Set<Major> majors;
 
-    public String getPhone() {
-        return phone;
-    }
+    @ManyToMany
+    @JoinTable(
+        name = "TeacherSubject",
+        joinColumns = @JoinColumn(name = "teacherID"),
+        inverseJoinColumns = @JoinColumn(name = "subjectID")
+    )
+    @JsonManagedReference
+    private Set<Subject> subjects;
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getDepartmentID() {
-        return departmentID;
-    }
-
-    public void setDepartmentID(String departmentID) {
-        this.departmentID = departmentID;
-    }
+    @ToString.Exclude
+    @OneToMany(mappedBy = "teacher")
+    @JsonManagedReference
+    private Set<SubjectSchedule> subjectSchedules;
 }

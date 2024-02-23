@@ -1,105 +1,71 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.sql.Timestamp;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Table(name = "Subject")
 public class Subject {
 
     @Id
+    @Column(nullable = false, length = 20)
     private String id;
 
+    @Column(nullable = false, length = 30)
     private String name;
-    private String createdAt;
-    private String teacherID;
-    private String departmentID;
-    private String beginDate;
-    private String endDate;
-    private int slot;
 
-    public Subject() {}
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "majorID", nullable = false)
+    private Major major;
 
-    public Subject(
-        String id,
-        String name,
-        String createdAt,
-        String teacherID,
-        String departmentID,
-        String beginDate,
-        String endDate
-    ) {
-        this.id = id;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.teacherID = teacherID;
-        this.departmentID = departmentID;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
-    }
+    @Column(nullable = false)
+    private Long creditsCount;
 
-    public String getId() {
-        return id;
-    }
+    @ToString.Exclude
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "creditID", referencedColumnName = "id", nullable = false)
+    private CreditDetail credit;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    @Column(nullable = false)
+    private Timestamp createdAt;
 
-    public String getName() {
-        return name;
-    }
+    @Column(nullable = false)
+    private Timestamp updatedAt;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(nullable = false)
+    private Boolean deleted;
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "subjects")
+    @JsonManagedReference
+    private Set<Teacher> teachers;
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getTeacherID() {
-        return teacherID;
-    }
-
-    public void setTeacherID(String teacherID) {
-        this.teacherID = teacherID;
-    }
-
-    public String getDepartmentID() {
-        return departmentID;
-    }
-
-    public void setDepartmentID(String departmentID) {
-        this.departmentID = departmentID;
-    }
-
-    public String getBeginDate() {
-        return beginDate;
-    }
-
-    public void setBeginDate(String beginDate) {
-        this.beginDate = beginDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public int getSlot() {
-        return slot;
-    }
-
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
+    @ToString.Exclude
+    @OneToMany(mappedBy = "subject")
+    @JsonManagedReference
+    private Set<SubjectSchedule> subjectSchedules;
 }

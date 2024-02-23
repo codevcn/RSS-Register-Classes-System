@@ -1,47 +1,40 @@
 package com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-@Table(name = "Account")
-public class Account {
+@Table(name = "Role")
+public class Role {
 
     @Id
-    @Column(nullable = false, length = 20)
-    private String username;
+    @Column(nullable = false, length = 10)
+    private String id;
 
     @Column(nullable = false, length = 50)
-    private String password;
+    private String description;
 
     @Column(nullable = false)
     private Timestamp createdAt;
 
-    @Column(nullable = false)
-    private Timestamp updatedAt;
-
-    @Column(nullable = false)
-    private Boolean deleted;
-
     @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "roleID", nullable = false)
-    @JsonBackReference
-    private Role role;
+    @OneToMany(mappedBy = "role")
+    @JsonManagedReference
+    private Set<Account> roleAccounts;
 }

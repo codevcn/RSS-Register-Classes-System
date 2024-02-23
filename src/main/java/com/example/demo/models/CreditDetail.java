@@ -3,11 +3,12 @@ package com.example.demo.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Date;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,21 +22,19 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "Admin")
-public class Admin {
+@Table(name = "CreditDetail")
+public class CreditDetail {
 
     @Id
-    @Column(nullable = false, length = 12)
-    private String idcard;
-
-    @Column(nullable = false, length = 30)
-    private String fullName;
+    @Column(nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private Date birthday;
+    private Long payPerCredit;
 
-    @Column(nullable = false, length = 10)
-    private String gender;
+    @Column(nullable = false)
+    private Long year;
 
     @Column(nullable = false)
     private Timestamp createdAt;
@@ -44,8 +43,8 @@ public class Admin {
     private Timestamp updatedAt;
 
     @ToString.Exclude
-    @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "username", nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "majorBlockID", nullable = false)
     @JsonBackReference
-    private Account account;
+    private BlockOfMajor majorBlock;
 }
