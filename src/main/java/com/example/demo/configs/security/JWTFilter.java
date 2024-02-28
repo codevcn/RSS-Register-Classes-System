@@ -38,7 +38,7 @@ public class JWTFilter extends OncePerRequestFilter {
         @NonNull HttpServletResponse response,
         @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        System.out.printf("\n>>> got a request\n");
+        System.out.printf("\n>>> request run into this JWT Filter \n");
 
         String jwt = extractJWTFromRequest(request);
         String userId = extractUserIdFromJWT(jwt);

@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "Teacher")
+@JsonIgnoreProperties(value = { "majors", "subjects", "subjectSchedules" })
 public class Teacher {
 
     @Id

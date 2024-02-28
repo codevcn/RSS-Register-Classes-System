@@ -6,10 +6,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "server")
+@ConfigurationProperties(prefix = "rss.client")
 @Getter
 @Setter
-public class ServerProps {
+public class ClientProps {
 
     private int port;
+    private String host;
 }

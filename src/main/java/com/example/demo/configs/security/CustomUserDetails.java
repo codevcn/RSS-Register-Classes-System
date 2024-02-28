@@ -1,6 +1,6 @@
 package com.example.demo.configs.security;
 
-import com.example.demo.models.Student;
+import com.example.demo.models.Account;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,17 +12,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 @ToString
 public class CustomUserDetails implements UserDetails {
 
-    private String fullName;
-    private String email;
+    private String studentID;
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(Student student) {
-        this.fullName = student.getFullName();
-        this.email = student.getId();
-        this.password = student.getAccount().getPassword();
+    public CustomUserDetails(Account account) {
+        this.studentID = account.getUsername();
+        this.password = account.getPassword();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(student.getAccount().getRole().getId().toUpperCase()));
+        authorities.add(new SimpleGrantedAuthority(account.getRole().getId().toUpperCase()));
         this.authorities = authorities;
     }
 
@@ -38,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return studentID;
     }
 
     @Override
@@ -59,9 +57,5 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public String getFullName() {
-        return fullName;
     }
 }
