@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import java.util.List; 
 
 @Service
 public class StudentService {
@@ -16,5 +17,9 @@ public class StudentService {
     public Student getStudentInfo(@NonNull HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
         return studentRepository.findByAccountUsername(username);
+    }
+
+    public List<Student> getAllStudents() {
+        return (List<Student>) studentRepository.findAll();
     }
 }

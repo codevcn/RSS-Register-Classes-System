@@ -11,6 +11,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
@@ -33,10 +35,35 @@ public class StudentController {
                     student.getFullName(),
                     student.getBirthday(),
                     student.getGender(),
-                    student.getMajor().getName(),
-                    student.getAccount().getUsername(),
-                    student.getAccount().getRole().getId()
+                    student.getMajor().getName()
+                    //student.getAccount().getUsername(),
+                    //student.getAccount().getRole().getId()
                 )
             );
     }
+
+    @GetMapping("get-all-student")
+    public ResponseEntity<List<GetStudentInfoResDTO>> getAllStudents() {
+        System.out.printf(">>> run here 1\n");
+        List<Student> students = studentService.getAllStudents();
+        System.out.printf(">>> run here 2\n");
+        for(Student student : students){
+            System.out.print(student.getAccount());
+        }
+        System.out.printf(">>> run here 3\n");
+        List<GetStudentInfoResDTO> studentInfoList = students.stream()
+            .map(student -> new GetStudentInfoResDTO(
+                    student.getId(),
+                    student.getPhone(),
+                    student.getFullName(),
+                    student.getBirthday(),
+                    student.getGender(),
+                    student.getMajor().getName()
+                    //student.getAccount().getUsername(),
+                    //student.getAccount().getRole().getId()
+            ))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(studentInfoList);
+    }
+
 }

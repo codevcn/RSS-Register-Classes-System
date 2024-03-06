@@ -10,8 +10,8 @@ public class StudentResDTOs {
         String fullName,
         Date birthday,
         String gender,
-        String major,
-        String accountUsername,
-        String role
+        String major
+        //String accountUsername,
+        //String role
     ) {}
 }
