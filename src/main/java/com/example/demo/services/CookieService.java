@@ -27,6 +27,7 @@ public class CookieService {
     public void setCookieAtClient(@NonNull HttpServletResponse response, String jwt) {
         Cookie cookie = new Cookie(jwtProps.getAUTH_JWT_NAME(), jwt);
         cookie.setMaxAge(jwtProps.getEXPIRATION_TIME_IN_MS() / 1000);
+        cookie.setPath("/");
         response.addCookie(cookie);
     }
 }

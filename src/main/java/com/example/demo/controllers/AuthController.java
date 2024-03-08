@@ -2,11 +2,14 @@ package com.example.demo.controllers;
 
 import com.example.demo.DTOs.request.LoginReqDTO;
 import com.example.demo.DTOs.response.SuccessResDTO;
+import com.example.demo.configs.props.JWTProps;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.CookieService;
 import com.example.demo.services.JWTService;
 import com.example.demo.utils.exceptions.CustomAuthException;
 import com.example.demo.utils.messages.AuthMessage;
+
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +34,14 @@ public class AuthController {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private JWTProps jwtProps;
+
     @PostMapping("login")
     public ResponseEntity<SuccessResDTO> login(
-        @RequestBody @Valid LoginReqDTO loginDTO,
-        @NonNull HttpServletResponse httpServletResponse
-    ) throws CustomAuthException {
+            @RequestBody @Valid LoginReqDTO loginDTO,
+            @NonNull HttpServletResponse httpServletResponse) throws CustomAuthException {
+
         try {
             authService.login(loginDTO);
         } catch (Exception e) {

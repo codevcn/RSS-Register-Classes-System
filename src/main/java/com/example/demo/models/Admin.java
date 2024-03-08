@@ -25,6 +25,9 @@ import lombok.ToString;
 public class Admin {
 
     @Id
+    @Column(nullable = false)
+    private Integer id;
+
     @Column(nullable = false, length = 12)
     private String idcard;
 
