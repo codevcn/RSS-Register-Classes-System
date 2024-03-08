@@ -70,4 +70,5 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     @JsonManagedReference
     private Set<SubjectSchedule> subjectSchedules;
+    
 }
