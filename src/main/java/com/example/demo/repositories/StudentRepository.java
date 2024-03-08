@@ -16,4 +16,11 @@ public interface StudentRepository extends JpaRepository<Student, String> {
         nativeQuery = true
     )
     Student findByAccountUsername(String username);
+
+    @Query(
+        value = "select * from Account where username = ?1 and u.deleted = 0",
+        nativeQuery = true
+    )
+    Student findStudentInfor(String username);
+
 }
