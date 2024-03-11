@@ -50,7 +50,11 @@ public class SecurityConfig {
                 })
             )
             .authorizeHttpRequests(authz ->
-                authz.requestMatchers("auth/**","student/**").permitAll().anyRequest().authenticated()
+                authz
+                    .requestMatchers("auth/**", "subjects/**", "student/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
             )
             .exceptionHandling(exHdlng -> exHdlng.authenticationEntryPoint(customAuthEntryPoint))
             .sessionManagement(ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
