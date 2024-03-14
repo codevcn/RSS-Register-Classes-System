@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface SubjectRepository extends JpaRepository<Subject, String> {
 
     @Query(
-    value = "SELECT * FROM Subject s WHERE s.id = ?1 OR s.name = ?1 OR s.majorID = ?1",
+    value = "SELECT * FROM Subject s WHERE s.id = ?1 OR s.name LIKE N'%?1%' OR s.majorID = ?1",
     nativeQuery = true)   
     Subject findSubject(String input);
     //s WHERE s.id LIKE %?1% OR s.name LIKE %?1% OR s.majorID LIKE %?1%

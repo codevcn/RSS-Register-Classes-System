@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 
 @Getter
 @Setter
@@ -14,15 +15,15 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public class ExceptionResDTO {
 
-    private String name;
+    private String name = Names.ExceptionNames.INTERNAL_SERVER_ERROR;
     private String message;
     private LocalDateTime timestamp;
-    private HttpStatus httpStatus;
+
+    @NonNull
+    private HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
     public ExceptionResDTO(Exception exception, String message) {
         setMessage(message);
         setTimestamp(LocalDateTime.now());
-        setName(Names.ExceptionNames.INTERNAL_SERVER_ERROR);
-        setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

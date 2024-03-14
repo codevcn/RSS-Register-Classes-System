@@ -41,7 +41,7 @@ class Helpers {
     public static void printStackTrace(Exception exception) {
         StackTraceElement stackTraceElement = exception.getStackTrace()[0];
         System.out.printf(
-            ">>> StackTrace [Class: %s, CodeLine: %s,  Method: %s] \n\n",
+            ">>> StackTrace [Class: %s, CodeLine: %s, Method: %s] \n\n",
             stackTraceElement.getClassName(),
             stackTraceElement.getLineNumber(),
             stackTraceElement.getMethodName()
@@ -117,7 +117,8 @@ public class ExceptionCatcher {
         String errorMessage = Helpers.specifyErrorMessage(exception.getMessage());
 
         CustomExceptionResDTO resBody = new CustomExceptionResDTO(exception, errorMessage);
+        resBody.setHttpStatus(HttpStatus.BAD_REQUEST);
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resBody);
+        return ResponseEntity.status(resBody.getHttpStatus()).body(resBody);
     }
 }
