@@ -20,8 +20,7 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
         HttpServletResponse response,
         AuthenticationException authException
     ) throws IOException, ServletException {
-        String redirect_url = UriComponentsBuilder
-            .fromPath("/login")
+        String redirect_url = UriComponentsBuilder.fromPath("/login")
             .queryParam("error", URLEncoder.encode(AuthMessage.UNAUTHENTICATED_USER, "UTF-8"))
             .build()
             .toUriString();

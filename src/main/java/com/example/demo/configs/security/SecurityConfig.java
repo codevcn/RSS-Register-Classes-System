@@ -47,17 +47,19 @@ public class SecurityConfig {
                     configuration.setAllowCredentials(true);
                     configuration.setAllowedHeaders(Arrays.asList("*"));
                     return configuration;
-                })
-            )
-            .authorizeHttpRequests(authz ->
-                authz
-                    .requestMatchers("auth/**", "subjects/**", "student/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
+                }))
+            .authorizeHttpRequests(
+                authz ->
+                    authz
+                        .requestMatchers("auth/**", "subjects/**", "student/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
             )
             .exceptionHandling(exHdlng -> exHdlng.authenticationEntryPoint(customAuthEntryPoint))
-            .sessionManagement(ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(
+                ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }

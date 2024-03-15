@@ -6,7 +6,6 @@ import com.example.demo.models.Major;
 import com.example.demo.models.Subject;
 import com.example.demo.services.SubjectService;
 import com.example.demo.utils.exceptions.CustomBaseException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +21,17 @@ public class SubjectController {
     private SubjectService subjectService;
 
     @GetMapping("/{input}")
-    public ResponseEntity<GetSubjectInfoResDTO> getSubjectInfo(@PathVariable String input) throws CustomBaseException {
+    public ResponseEntity<GetSubjectInfoResDTO> getSubjectInfo(@PathVariable String input)
+        throws CustomBaseException {
         Subject subject = subjectService.getSubjectInfo(null, input);
         Major major = subject.getMajor();
-        return ResponseEntity.ok(new GetSubjectInfoResDTO(subject.getId(), subject.getName(), subject.getCreditsCount(), new MajorOfSubjectResDTO(major.getId(), major.getName())));
+        return ResponseEntity.ok(
+            new GetSubjectInfoResDTO(
+                subject.getId(),
+                subject.getName(),
+                subject.getCreditsCount(),
+                new MajorOfSubjectResDTO(major.getId(), major.getName())
+            )
+        );
     }
 }

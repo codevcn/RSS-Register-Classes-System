@@ -18,6 +18,9 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.printf("\n>>> Server is working on http://localhost:%s/api/ \n\n", serverProps.getPort());
+        System.out.printf(
+            "\n>>> Server is working on http://localhost:%s/api/ \n\n",
+            serverProps.getPort()
+        );
     }
 }

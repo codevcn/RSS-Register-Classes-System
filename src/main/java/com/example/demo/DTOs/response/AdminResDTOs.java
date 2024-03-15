@@ -1,11 +1,11 @@
 package com.example.demo.DTOs.response;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public class AdminResDTOs {
+
     public static record GetAdminAccountInfoResDTO(
-        Integer id,    
+        Integer id,
         String idcard,
         String fullName,
         Date birthday,
@@ -13,9 +13,9 @@ public class AdminResDTOs {
         String accountUsername,
         String role
     ) {}
-    
+
     public static record GetAdminInfoResDTO(
-        Integer id,    
+        Integer id,
         String idcard,
         String fullName,
         Date birthday,
@@ -24,4 +24,3 @@ public class AdminResDTOs {
         String role
     ) {}
 }
-

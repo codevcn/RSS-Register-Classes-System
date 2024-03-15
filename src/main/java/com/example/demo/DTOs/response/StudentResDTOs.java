@@ -1,7 +1,6 @@
 package com.example.demo.DTOs.response;
 
 import java.sql.Date;
-import com.example.demo.models.Major;
 
 public class StudentResDTOs {
 
@@ -15,5 +14,4 @@ public class StudentResDTOs {
         //String accountUsername,
         //String role
     ) {}
-    
 }

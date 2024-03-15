@@ -1,16 +1,15 @@
 package com.example.demo.services;
 
+import com.example.demo.DTOs.response.StudentResDTOs;
+import com.example.demo.models.Major;
 import com.example.demo.models.Student;
 import com.example.demo.repositories.StudentRepository;
-import com.example.demo.DTOs.response.StudentResDTOs;
-import com.example.demo.DTOs.response.StudentResDTOs.GetStudentInfoResDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import java.util.List; 
-import java.util.Optional;
-import com.example.demo.models.Major;
 
 @Service
 public class StudentService {
@@ -38,9 +37,12 @@ public class StudentService {
     //     Major major = new Major();
     //     major.setName(updatedStudentInfo.major());
     //     student.setMajor(major);
-    //     return studentRepository.save(student); 
-    // }   
-    public Student updateStudent(String id, StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo) {
+    //     return studentRepository.save(student);
+    // }
+    public Student updateStudent(
+        String id,
+        StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo
+    ) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             Student student = optionalStudent.get();
@@ -61,5 +63,4 @@ public class StudentService {
     public Student getStudentById(String id) {
         return studentRepository.findById(id).orElse(null);
     }
-
 }

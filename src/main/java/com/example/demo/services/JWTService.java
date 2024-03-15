@@ -26,8 +26,7 @@ public class JWTService {
     }
 
     private String createToken(Map<String, Object> claims, String userId) {
-        return Jwts
-            .builder()
+        return Jwts.builder()
             .claims(claims)
             .subject(userId)
             .issuedAt(new Date(System.currentTimeMillis()))

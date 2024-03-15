@@ -4,16 +4,14 @@ import com.example.demo.DTOs.response.AdminResDTOs;
 import com.example.demo.models.Admin;
 import com.example.demo.repositories.AdminRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.Null;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdminService {
+
     @Autowired
     private AdminRepository adminRepository;
 
@@ -21,6 +19,7 @@ public class AdminService {
         String username = httpServletRequest.getUserPrincipal().getName();
         return adminRepository.findByAccountUsername(username);
     }
+
     public AdminService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }
@@ -54,9 +53,7 @@ public class AdminService {
         admin.setBirthday(updatedAdminInfo.birthday());
         admin.setGender(updatedAdminInfo.gender());
         return adminRepository.save(admin);
-
     }
-
     // public void deleteAdmin(String id) {
     //     adminRepository.deleteById(id);
     // }

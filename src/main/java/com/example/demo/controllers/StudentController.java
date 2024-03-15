@@ -5,18 +5,18 @@ import com.example.demo.DTOs.response.StudentResDTOs.GetStudentInfoResDTO;
 import com.example.demo.models.Student;
 import com.example.demo.services.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("student")
@@ -30,20 +30,18 @@ public class StudentController {
         @NonNull HttpServletRequest httpServletRequest
     ) {
         Student student = studentService.getStudentInfo(httpServletRequest);
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(
-                new GetStudentInfoResDTO(
-                    student.getId(),
-                    student.getPhone(),
-                    student.getFullName(),
-                    student.getBirthday(),
-                    student.getGender(),
-                    student.getMajor().getName()
-                    //student.getAccount().getUsername(),
-                    //student.getAccount().getRole().getId()
-                )
-            );
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new GetStudentInfoResDTO(
+                student.getId(),
+                student.getPhone(),
+                student.getFullName(),
+                student.getBirthday(),
+                student.getGender(),
+                student.getMajor().getName()
+                //student.getAccount().getUsername(),
+                //student.getAccount().getRole().getId()
+            )
+        );
     }
 
     @GetMapping("get-all-student")
@@ -55,8 +53,10 @@ public class StudentController {
         //     System.out.print(student.getAccount());
         // }
         // System.out.printf(">>> run here 3\n");
-        List<GetStudentInfoResDTO> studentInfoList = students.stream()
-            .map(student -> new GetStudentInfoResDTO(
+        List<GetStudentInfoResDTO> studentInfoList = students
+            .stream()
+            .map(student ->
+                new GetStudentInfoResDTO(
                     student.getId(),
                     student.getPhone(),
                     student.getFullName(),
@@ -65,14 +65,15 @@ public class StudentController {
                     student.getMajor().getName()
                     //student.getAccount().getUsername(),
                     //student.getAccount().getRole().getId()
-            ))
+                ))
             .collect(Collectors.toList());
         return ResponseEntity.ok(studentInfoList);
     }
 
     @GetMapping("get-student/{studentID}")
     public ResponseEntity<GetStudentInfoResDTO> getSelectedStudentInfo(
-            @PathVariable("studentID") String studentID) {
+        @PathVariable("studentID") String studentID
+    ) {
         Student student = studentService.getStudentById(studentID);
         // System.out.printf(">>> run here 111\n");
         // System.out.print(student);
@@ -90,8 +91,9 @@ public class StudentController {
 
     @PutMapping("update-student/{id}")
     public ResponseEntity<GetStudentInfoResDTO> updateStudent(
-            @PathVariable("id") String id,
-            @RequestBody StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo) {
+        @PathVariable("id") String id,
+        @RequestBody StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo
+    ) {
         Student updatedStudent = studentService.updateStudent(id, updatedStudentInfo);
         if (updatedStudent != null) {
             GetStudentInfoResDTO updatedStudentResponse = new GetStudentInfoResDTO(
@@ -112,5 +114,4 @@ public class StudentController {
     public ResponseEntity<String> hideStudent(@PathVariable String id) {
         return ResponseEntity.ok("Student hidden successfully");
     }
-
 }

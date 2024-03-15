@@ -22,5 +22,4 @@ public interface StudentRepository extends JpaRepository<Student, String> {
         nativeQuery = true
     )
     Student findStudentInfor(String username);
-
 }

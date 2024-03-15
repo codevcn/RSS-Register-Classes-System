@@ -84,7 +84,9 @@ public class ExceptionCatcher {
 
     // catch sql query exceptions
     @ExceptionHandler({ DataAccessException.class })
-    public ResponseEntity<ExceptionResDTO> handleDataAccessException(DataAccessException exception) {
+    public ResponseEntity<ExceptionResDTO> handleDataAccessException(
+        DataAccessException exception
+    ) {
         Helpers.logException("DataAccess Exception", exception);
         Helpers.printStackTrace(exception);
 

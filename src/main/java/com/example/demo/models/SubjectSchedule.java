@@ -28,8 +28,10 @@ import lombok.ToString;
     name = "SubjectSchedule",
     uniqueConstraints = {
         @UniqueConstraint(
-            columnNames = { "beginDate", "endDate", "subjectID", "dayOfWeek", "startingSession", "teacherID" }
-        ),
+            columnNames = {
+                "beginDate", "endDate", "subjectID", "dayOfWeek", "startingSession", "teacherID"
+            }
+        )
     }
 )
 public class SubjectSchedule {
