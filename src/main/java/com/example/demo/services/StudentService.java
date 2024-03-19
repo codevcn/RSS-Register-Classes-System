@@ -54,7 +54,7 @@ public class StudentService {
             student.setMajor(major);
             return studentRepository.save(student);
         } else {
-            return null; // hoặc xử lý theo cách thích hợp trong trường hợp không tìm thấy sinh viên
+            return null;
         }
     }
 

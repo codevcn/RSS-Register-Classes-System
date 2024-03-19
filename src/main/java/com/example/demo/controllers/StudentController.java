@@ -92,6 +92,7 @@ public class StudentController {
     public ResponseEntity<GetStudentInfoResDTO> updateStudent(
             @PathVariable("id") String id,
             @RequestBody StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo) {
+        System.out.println("ID của sinh viên cần cập nhật: " + id);
         Student updatedStudent = studentService.updateStudent(id, updatedStudentInfo);
         if (updatedStudent != null) {
             GetStudentInfoResDTO updatedStudentResponse = new GetStudentInfoResDTO(
@@ -101,6 +102,7 @@ public class StudentController {
                 updatedStudent.getBirthday(),
                 updatedStudent.getGender(),
                 updatedStudent.getMajor().getName()
+                //new MajorOfSubjectResDTO(updatedStudent.getMajor().getId(), updatedStudent.getMajor().getName())
             );
             return ResponseEntity.ok(updatedStudentResponse);
         } else {
