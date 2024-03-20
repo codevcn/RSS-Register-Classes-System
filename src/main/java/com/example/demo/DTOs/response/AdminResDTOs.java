@@ -15,7 +15,7 @@ public class AdminResDTOs {
     ) {}
 
     public static record GetAdminInfoResDTO(
-        Integer id,
+        Long id,
         String idcard,
         String fullName,
         Date birthday,

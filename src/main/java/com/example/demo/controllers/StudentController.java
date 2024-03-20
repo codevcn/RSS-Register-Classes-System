@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,13 +27,14 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("get-student-info")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<GetStudentInfoResDTO> getStudentInfo(
         @NonNull HttpServletRequest httpServletRequest
     ) {
         Student student = studentService.getStudentInfo(httpServletRequest);
         return ResponseEntity.status(HttpStatus.OK).body(
             new GetStudentInfoResDTO(
-                student.getId(),
+                student.getStudentCode(),
                 student.getPhone(),
                 student.getFullName(),
                 student.getBirthday(),
@@ -57,7 +59,7 @@ public class StudentController {
             .stream()
             .map(student ->
                 new GetStudentInfoResDTO(
-                    student.getId(),
+                    student.getStudentCode(),
                     student.getPhone(),
                     student.getFullName(),
                     student.getBirthday(),
@@ -79,7 +81,7 @@ public class StudentController {
         // System.out.print(student);
         // System.out.printf(">>> run here 222\n");
         GetStudentInfoResDTO studentInfoDTO = new GetStudentInfoResDTO(
-            student.getId(),
+            student.getStudentCode(),
             student.getPhone(),
             student.getFullName(),
             student.getBirthday(),
@@ -97,7 +99,7 @@ public class StudentController {
         Student updatedStudent = studentService.updateStudent(id, updatedStudentInfo);
         if (updatedStudent != null) {
             GetStudentInfoResDTO updatedStudentResponse = new GetStudentInfoResDTO(
-                updatedStudent.getId(),
+                updatedStudent.getStudentCode(),
                 updatedStudent.getPhone(),
                 updatedStudent.getFullName(),
                 updatedStudent.getBirthday(),

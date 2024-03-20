@@ -1,7 +1,2 @@
 #!/usr/bin/env sh
-
-# format codebase in the pre-commit period
-mvn spotless:apply
-
-# add all files to stage change
-git add .
+. "${0%/*}/format-codebase"

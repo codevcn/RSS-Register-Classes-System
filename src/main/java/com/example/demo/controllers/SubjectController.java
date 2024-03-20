@@ -27,10 +27,10 @@ public class SubjectController {
         Major major = subject.getMajor();
         return ResponseEntity.ok(
             new GetSubjectInfoResDTO(
-                subject.getId(),
+                subject.getSubjectCode(),
                 subject.getName(),
                 subject.getCreditsCount(),
-                new MajorOfSubjectResDTO(major.getId(), major.getName())
+                new MajorOfSubjectResDTO(major.getMajorCode(), major.getName())
             )
         );
     }

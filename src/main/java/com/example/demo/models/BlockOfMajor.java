@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -26,8 +28,12 @@ import lombok.ToString;
 public class BlockOfMajor {
 
     @Id
-    @Column(nullable = false, length = 20)
-    private String id;
+    @Column(nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 20, unique = true)
+    private String majorBlockCode;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -39,4 +45,9 @@ public class BlockOfMajor {
     @OneToMany(mappedBy = "majorBlock")
     @JsonManagedReference
     private Set<CreditDetail> creditDetails;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "blockOfMajor")
+    @JsonManagedReference
+    private Set<Major> majors;
 }

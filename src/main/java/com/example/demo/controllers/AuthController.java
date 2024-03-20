@@ -2,7 +2,6 @@ package com.example.demo.controllers;
 
 import com.example.demo.DTOs.request.LoginReqDTO;
 import com.example.demo.DTOs.response.SuccessResDTO;
-import com.example.demo.configs.props.JWTProps;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.CookieService;
 import com.example.demo.services.JWTService;
@@ -31,9 +30,6 @@ public class AuthController {
 
     @Autowired
     private JWTService jwtService;
-
-    @Autowired
-    private JWTProps jwtProps;
 
     @PostMapping("login")
     public ResponseEntity<SuccessResDTO> login(

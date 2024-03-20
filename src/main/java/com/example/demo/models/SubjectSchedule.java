@@ -8,10 +8,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -82,4 +84,7 @@ public class SubjectSchedule {
 
     @Column(nullable = false)
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "subjectSchedule")
+    private Set<SubjectRegister> subjectRegisters;
 }

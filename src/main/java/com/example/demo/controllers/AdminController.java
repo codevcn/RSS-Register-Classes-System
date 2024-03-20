@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("admin")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
     @Autowired
@@ -32,12 +34,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new GetAdminInfoResDTO(
                 admin.getId(),
-                admin.getIdcard(),
+                admin.getIDCard(),
                 admin.getFullName(),
                 admin.getBirthday(),
                 admin.getGender(),
                 admin.getAccount().getUsername(),
-                admin.getAccount().getRole().getId()
+                admin.getAccount().getRole().getRoleCode()
             )
         );
     }
@@ -69,12 +71,12 @@ public class AdminController {
         Admin admin = adminService.getAdminById(ID);
         GetAdminInfoResDTO adminInfoDTO = new GetAdminInfoResDTO(
             admin.getId(),
-            admin.getIdcard(),
+            admin.getIDCard(),
             admin.getFullName(),
             admin.getBirthday(),
             admin.getGender(),
             admin.getAccount().getUsername(),
-            admin.getAccount().getRole().getId()
+            admin.getAccount().getRole().getRoleCode()
         );
 
         return ResponseEntity.ok(adminInfoDTO);
@@ -88,12 +90,12 @@ public class AdminController {
         Admin updatedAdmin = adminService.updateAdmin(id, updatedAdminInfo);
         GetAdminInfoResDTO updatedAdminResponse = new GetAdminInfoResDTO(
             updatedAdmin.getId(),
-            updatedAdmin.getIdcard(),
+            updatedAdmin.getIDCard(),
             updatedAdmin.getFullName(),
             updatedAdmin.getBirthday(),
             updatedAdmin.getGender(),
             updatedAdmin.getAccount().getUsername(),
-            updatedAdmin.getAccount().getRole().getId()
+            updatedAdmin.getAccount().getRole().getRoleCode()
         );
         return ResponseEntity.ok(updatedAdminResponse);
     }
@@ -106,12 +108,12 @@ public class AdminController {
         Admin updatedAdmin = adminService.updateAdmin(id, updatedAdminInfo);
         GetAdminInfoResDTO updatedAdminResponse = new GetAdminInfoResDTO(
             updatedAdmin.getId(),
-            updatedAdmin.getIdcard(),
+            updatedAdmin.getIDCard(),
             updatedAdmin.getFullName(),
             updatedAdmin.getBirthday(),
             updatedAdmin.getGender(),
             updatedAdmin.getAccount().getUsername(),
-            updatedAdmin.getAccount().getRole().getId()
+            updatedAdmin.getAccount().getRole().getRoleCode()
         );
         return ResponseEntity.ok(updatedAdminResponse);
     }

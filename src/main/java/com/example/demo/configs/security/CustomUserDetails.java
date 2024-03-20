@@ -20,7 +20,7 @@ public class CustomUserDetails implements UserDetails {
         this.studentID = account.getUsername();
         this.password = account.getPassword();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(account.getRole().getId().toUpperCase()));
+        authorities.add(new SimpleGrantedAuthority(account.getRole().getRoleCode().toUpperCase()));
         this.authorities = authorities;
     }
 

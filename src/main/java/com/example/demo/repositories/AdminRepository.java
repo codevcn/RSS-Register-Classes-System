@@ -4,7 +4,7 @@ import com.example.demo.models.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface AdminRepository extends JpaRepository<Admin, Integer> {
+public interface AdminRepository extends JpaRepository<Admin, Long> {
     @Query(value = "select * from Admin where id = ?1", nativeQuery = true)
     Admin findByID(Integer id);
 

@@ -1,44 +1,46 @@
 package com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "SubjectSlot")
-public class SubjectSlot {
+@Entity
+@Table(name = "Account")
+public class RegisterSession {
 
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ToString.Exclude
-    @OneToOne
-    @JoinColumn(name = "subjectID", referencedColumnName = "id", nullable = false, unique = true)
-    @JsonBackReference
-    private Subject subject;
+    @Column(nullable = false)
+    private Timestamp beginTime;
 
     @Column(nullable = false)
-    private Long slot;
+    private Timestamp endTime;
+
+    @Column(nullable = false, length = 50, unique = true)
+    private String regSessCode;
 
     @Column(nullable = false)
     private Timestamp createdAt;
+
+    @OneToMany(mappedBy = "registerSession")
+    private Set<SubjectRegister> subjectRegisters;
 }

@@ -4,7 +4,7 @@ import com.example.demo.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface StudentRepository extends JpaRepository<Student, String> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(
         value = "select u" + " from Student u" + " where u.id = ?1" + " and u.deleted = 0",
         nativeQuery = true

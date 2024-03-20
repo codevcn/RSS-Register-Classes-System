@@ -1,15 +1,16 @@
 package com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.models.keys.SubjectRegisterKey;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-import java.sql.Date;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,35 +24,35 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "Admin")
-public class Admin {
+@Table(name = "SubjectRegister")
+public class SubjectRegister {
 
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 12, unique = true)
-    private String IDCard;
-
-    @Column(nullable = false, length = 30)
-    private String fullName;
-
     @Column(nullable = false)
-    private Date birthday;
-
-    @Column(nullable = false, length = 10)
-    private String gender;
+    private Long slot;
 
     @Column(nullable = false)
     private Timestamp createdAt;
 
-    @Column(nullable = false)
-    private Timestamp updatedAt;
+    @ManyToOne
+    @MapsId("studentID")
+    @JoinColumn(name = "studentID")
+    private Subject subject;
 
-    @ToString.Exclude
-    @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "username", nullable = true)
-    @JsonBackReference
-    private Account account;
+    @ManyToOne
+    @MapsId("regSessID")
+    @JoinColumn(name = "regSessID")
+    private RegisterSession registerSession;
+
+    @ManyToOne
+    @MapsId("subjectScheduleID")
+    @JoinColumn(name = "subjectScheduleID")
+    private SubjectSchedule subjectSchedule;
+
+    @EmbeddedId
+    private SubjectRegisterKey subjectRegisterKey;
 }
