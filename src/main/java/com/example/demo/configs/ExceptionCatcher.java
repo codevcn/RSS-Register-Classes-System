@@ -110,7 +110,7 @@ public class ExceptionCatcher {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resBody);
     }
 
-    // catch base exceptions
+    // catch custom exceptions
     @ExceptionHandler({ CustomBaseException.class })
     public ResponseEntity<ExceptionResDTO> handleBaseException(CustomBaseException exception) {
         Helpers.logException("Custom Base Exception", exception);

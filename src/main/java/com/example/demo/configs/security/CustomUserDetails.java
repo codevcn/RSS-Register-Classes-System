@@ -12,13 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 @ToString
 public class CustomUserDetails implements UserDetails {
 
-    private String studentID;
-    private String password;
+    private String studentUsername;
+    private String studentPassword;
     private List<GrantedAuthority> authorities;
 
     public CustomUserDetails(Account account) {
-        this.studentID = account.getUsername();
-        this.password = account.getPassword();
+        this.studentUsername = account.getUsername();
+        this.studentPassword = account.getPassword();
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(account.getRole().getRoleCode().toUpperCase()));
         this.authorities = authorities;
@@ -31,12 +31,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return studentPassword;
     }
 
     @Override
     public String getUsername() {
-        return studentID;
+        return studentUsername;
     }
 
     @Override
