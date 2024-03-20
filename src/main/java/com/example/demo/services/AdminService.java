@@ -47,8 +47,8 @@ public class AdminService {
     // return adminRepository.save(admin);
     // }
     public Admin updateAdmin(Integer id, AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo) {
-        Admin admin = adminRepository.findById(id).orElse(null);
-        admin.setIDCard(updatedAdminInfo.idcard());
+        Admin admin = adminRepository.findByID(id);
+        admin.setIdcard(updatedAdminInfo.idcard());
         admin.setFullName(updatedAdminInfo.fullName());
         admin.setBirthday(updatedAdminInfo.birthday());
         admin.setGender(updatedAdminInfo.gender());

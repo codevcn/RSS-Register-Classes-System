@@ -10,5 +10,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
         nativeQuery = true
     )
     Subject findSubject(String input);
+
     //s WHERE s.id LIKE %?1% OR s.name LIKE %?1% OR s.majorID LIKE %?1%
+    @Query(value = "SELECT * FROM Subject WHERE id = ?1 ", nativeQuery = true)
+    Subject findSubjectbyid(String id);
 }
