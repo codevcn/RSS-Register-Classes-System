@@ -1,20 +1,53 @@
-#!/usr/bin/env sh
+#!/bin/zsh
 
-# format codebase in the pre-commit period
+# Immediately exit if any command has a non-zero exit status
+set -e
+
+echo ">>> Running formatter..."
+
+# Creaate a patch file
+GIT_STASH_FILE="stash.patch"
+
+# Stash unstaged changes
+git diff >"$GIT_STASH_FILE"
+
+# add the patch so it is not stashed
+git add "$GIT_STASH_FILE"
+
+# stash untracked files
+git stash -k
+
+# apply spotless
 mvn spotless:apply
 
-# check code, if invalid then stop committing
-mvn spotless:check
+# re-add any changes that spotless created
+git add -u
 
-exit_code=$?
+# store the last exit code
+RESULT_CODE=$?
+
+if test -f "$GIT_STASH_FILE"; then
+    echo ">>> $GIT_STASH_FILE has been found"
+
+    # apply the patch
+    git apply stash.patch --allow-empty
+
+    # delete the patch and re-add that to the index
+    rm -f stash.patch
+    git add stash.patch
+else
+    echo ">>> $GIT_STASH_FILE has not been found"
+fi
+
+# delete the WIP stash
+git stash drop
 
 # check if exit code is 0
-if [ $exit_code -eq 0 ]; then
+if [ $RESULT_CODE -eq 0 ]; then
     echo ">>> OK, clean code!"
 else
     echo ">>> Something went wrong... stop committing!"
-    exit $exit_code
 fi
 
-# add all files to stage change
-git add .
+# return the exit code
+exit $RESULT_CODE
