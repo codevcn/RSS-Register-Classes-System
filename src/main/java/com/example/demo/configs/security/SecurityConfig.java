@@ -51,7 +51,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(
                 authz ->
                     authz
-                        .requestMatchers("auth/**", "subjects/**", "student/**")
+                        .requestMatchers("auth/**", "subjects/**", "student/**", "major/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

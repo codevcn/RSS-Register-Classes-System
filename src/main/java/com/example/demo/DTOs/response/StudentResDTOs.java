@@ -14,4 +14,9 @@ public class StudentResDTOs {
         //String accountUsername,
         //String role
     ) {}
+    // public static record MajorOfSubjectResDTO(
+    //     String majorID,
+    //     String majorName
+    // ) {}
+
 }
