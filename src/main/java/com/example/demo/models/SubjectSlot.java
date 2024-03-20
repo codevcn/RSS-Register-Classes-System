@@ -27,7 +27,7 @@ public class SubjectSlot {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)     
     private Long id;
 
     @ToString.Exclude

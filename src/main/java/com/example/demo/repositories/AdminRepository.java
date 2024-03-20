@@ -3,9 +3,6 @@ package com.example.demo.repositories;
 import com.example.demo.models.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
-
 public interface AdminRepository extends JpaRepository<Admin,Integer> {
     @Query(
         value = "select * from Admin where id = ?1",
