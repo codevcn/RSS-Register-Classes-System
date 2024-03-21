@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTOs.response.AdminResDTOs;
 import com.example.demo.DTOs.response.AdminResDTOs.*;
 import com.example.demo.models.Admin;
 import com.example.demo.services.AdminService;
@@ -13,8 +12,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,23 +41,6 @@ public class AdminController {
         );
     }
 
-    // @GetMapping("get-admin")
-    // public ResponseEntity<GetAdminInfoResDTO> getAdminAccountInfo(
-    // Principal principal) {
-    // String adminId = principal.getName();
-    // Admin admin = adminService.getAdminById(adminId);
-    // GetAdminInfoResDTO adminInfoDTO = new GetAdminInfoResDTO(
-    // admin.getId(),
-    // admin.getIdcard(),
-    // admin.getFullName(),
-    // admin.getBirthday(),
-    // admin.getGender(),
-    // admin.getAccount().getUsername(),
-    // admin.getAccount().getRole().getId());
-
-    // return ResponseEntity.ok(adminInfoDTO);
-    // }
-
     @GetMapping("get-admin/{accountID}")
     public ResponseEntity<GetAdminInfoResDTO> getAdminAccountInfo(
         @PathVariable("accountID") String accountID,
@@ -81,40 +61,39 @@ public class AdminController {
 
         return ResponseEntity.ok(adminInfoDTO);
     }
+    // @PutMapping("update-admin/{id}")
+    // public ResponseEntity<GetAdminInfoResDTO> updateAdmin(
+    //     @PathVariable("id") Integer id,
+    //     @RequestBody AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo
+    // ) {
+    //     Admin updatedAdmin = adminService.updateAdmin(id, updatedAdminInfo);
+    //     GetAdminInfoResDTO updatedAdminResponse = new GetAdminInfoResDTO(
+    //         updatedAdmin.getId(),
+    //         updatedAdmin.getIDCard(),
+    //         updatedAdmin.getFullName(),
+    //         updatedAdmin.getBirthday(),
+    //         updatedAdmin.getGender(),
+    //         updatedAdmin.getAccount().getUsername(),
+    //         updatedAdmin.getAccount().getRole().getRoleCode()
+    //     );
+    //     return ResponseEntity.ok(updatedAdminResponse);
+    // }
 
-    @PutMapping("update-admin/{id}")
-    public ResponseEntity<GetAdminInfoResDTO> updateAdmin(
-        @PathVariable("id") Integer id,
-        @RequestBody AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo
-    ) {
-        Admin updatedAdmin = adminService.updateAdmin(id, updatedAdminInfo);
-        GetAdminInfoResDTO updatedAdminResponse = new GetAdminInfoResDTO(
-            updatedAdmin.getId(),
-            updatedAdmin.getIDCard(),
-            updatedAdmin.getFullName(),
-            updatedAdmin.getBirthday(),
-            updatedAdmin.getGender(),
-            updatedAdmin.getAccount().getUsername(),
-            updatedAdmin.getAccount().getRole().getRoleCode()
-        );
-        return ResponseEntity.ok(updatedAdminResponse);
-    }
-
-    @PutMapping("Change-Password/{id}")
-    public ResponseEntity<GetAdminInfoResDTO> ChangePassword(
-        @PathVariable("id") Integer id,
-        @RequestBody AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo
-    ) {
-        Admin updatedAdmin = adminService.updateAdmin(id, updatedAdminInfo);
-        GetAdminInfoResDTO updatedAdminResponse = new GetAdminInfoResDTO(
-            updatedAdmin.getId(),
-            updatedAdmin.getIDCard(),
-            updatedAdmin.getFullName(),
-            updatedAdmin.getBirthday(),
-            updatedAdmin.getGender(),
-            updatedAdmin.getAccount().getUsername(),
-            updatedAdmin.getAccount().getRole().getRoleCode()
-        );
-        return ResponseEntity.ok(updatedAdminResponse);
-    }
+    // @PutMapping("Change-Password/{id}")
+    // public ResponseEntity<GetAdminInfoResDTO> ChangePassword(
+    //     @PathVariable("id") Integer id,
+    //     @RequestBody AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo
+    // ) {
+    //     Admin updatedAdmin = adminService.updateAdmin(id, updatedAdminInfo);
+    //     GetAdminInfoResDTO updatedAdminResponse = new GetAdminInfoResDTO(
+    //         updatedAdmin.getId(),
+    //         updatedAdmin.getIDCard(),
+    //         updatedAdmin.getFullName(),
+    //         updatedAdmin.getBirthday(),
+    //         updatedAdmin.getGender(),
+    //         updatedAdmin.getAccount().getUsername(),
+    //         updatedAdmin.getAccount().getRole().getRoleCode()
+    //     );
+    //     return ResponseEntity.ok(updatedAdminResponse);
+    // }
 }

@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -28,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "Major")
-@JsonIgnoreProperties(value = { "teachers", "subjects", "students" })
+@JsonIgnoreProperties(value = { "subjects", "students", "teacherMajors" })
 public class Major {
 
     @Id
@@ -46,11 +45,6 @@ public class Major {
     private Timestamp createdAt;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "majors")
-    @JsonManagedReference
-    private Set<Teacher> teachers;
-
-    @ToString.Exclude
     @OneToMany(mappedBy = "major")
     @JsonManagedReference
     private Set<Subject> subjects;
@@ -65,4 +59,9 @@ public class Major {
     @ManyToOne
     @JoinColumn(name = "majorBlockID", nullable = false)
     private BlockOfMajor blockOfMajor;
+
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(mappedBy = "major")
+    private Set<TeacherMajor> teacherMajors;
 }

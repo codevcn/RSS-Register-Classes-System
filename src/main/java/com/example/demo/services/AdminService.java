@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOs.response.AdminResDTOs;
 import com.example.demo.models.Admin;
 import com.example.demo.repositories.AdminRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,26 +34,12 @@ public class AdminService {
     public Admin createAdmin(Admin admin) {
         return adminRepository.save(admin);
     }
-
-    // public Admin updateAdmin(String id, AdminResDTOs.GetAdminInfoResDTO
-    // updatedAdminInfo) {
-    // Admin admin = new Admin();
-    // admin.setIdcard(updatedAdminInfo.idcard());
-    // admin.setFullName(updatedAdminInfo.fullName());
-    // admin.setBirthday(updatedAdminInfo.birthday());
-    // admin.setGender(updatedAdminInfo.gender());
-
-    // return adminRepository.save(admin);
-    // }
-    public Admin updateAdmin(Integer id, AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo) {
-        Admin admin = adminRepository.findByID(id);
-        admin.setIdcard(updatedAdminInfo.idcard());
-        admin.setFullName(updatedAdminInfo.fullName());
-        admin.setBirthday(updatedAdminInfo.birthday());
-        admin.setGender(updatedAdminInfo.gender());
-        return adminRepository.save(admin);
-    }
-    // public void deleteAdmin(String id) {
-    //     adminRepository.deleteById(id);
+    // public Admin updateAdmin(Integer id, AdminResDTOs.GetAdminInfoResDTO updatedAdminInfo) {
+    //     Admin admin = adminRepository.findByID(id);
+    //     admin.setIdcard(updatedAdminInfo.idcard());
+    //     admin.setFullName(updatedAdminInfo.fullName());
+    //     admin.setBirthday(updatedAdminInfo.birthday());
+    //     admin.setGender(updatedAdminInfo.gender());
+    //     return adminRepository.save(admin);
     // }
 }

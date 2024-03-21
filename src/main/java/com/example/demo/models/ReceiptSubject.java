@@ -1,8 +1,6 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,10 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
-import java.util.Set;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +22,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "RegisterReceipt")
-@JsonIgnoreProperties(value = { "receiptSubjects" })
-public class RegisterReceipt {
+@Table(
+    name = "ReceiptSubject",
+    uniqueConstraints = { @UniqueConstraint(columnNames = { "receiptID", "subjectID" }) }
+)
+public class ReceiptSubject {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -36,22 +34,14 @@ public class RegisterReceipt {
     private Long id;
 
     @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "studentID", nullable = false)
     @JsonBackReference
-    private Student student;
-
-    @Column(nullable = false)
-    private Long totalCredits;
-
-    @Column(nullable = false)
-    private Long totalPayAmount;
-
-    @Column(nullable = false)
-    private Timestamp createdAt;
+    @ManyToOne
+    @JoinColumn(name = "receiptID")
+    private RegisterReceipt receipt;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "receipt")
-    @JsonManagedReference
-    private Set<ReceiptSubject> receiptSubjects;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "subjectID")
+    private Subject subject;
 }

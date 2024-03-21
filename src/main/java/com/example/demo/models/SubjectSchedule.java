@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ import lombok.ToString;
         )
     }
 )
+@JsonIgnoreProperties(value = { "subjectRegisters" })
 public class SubjectSchedule {
 
     @Id
@@ -85,6 +88,8 @@ public class SubjectSchedule {
     @Column(nullable = false)
     private Timestamp updatedAt;
 
+    @ToString.Exclude
+    @JsonManagedReference
     @OneToMany(mappedBy = "subjectSchedule")
     private Set<SubjectRegister> subjectRegisters;
 }

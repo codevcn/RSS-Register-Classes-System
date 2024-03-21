@@ -24,7 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "BlockOfMajor")
-@JsonIgnoreProperties(value = { "creditDetails" })
+@JsonIgnoreProperties(value = { "creditDetails", "majors" })
 public class BlockOfMajor {
 
     @Id
@@ -42,7 +42,7 @@ public class BlockOfMajor {
     private Timestamp createdAt;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "majorBlock")
+    @OneToMany(mappedBy = "blockOfMajor")
     @JsonManagedReference
     private Set<CreditDetail> creditDetails;
 

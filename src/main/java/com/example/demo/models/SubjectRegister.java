@@ -1,16 +1,15 @@
 package com.example.demo.models;
 
-import com.example.demo.models.keys.SubjectRegisterKey;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "SubjectRegister")
+@Table(
+    name = "SubjectRegister",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "studentID", "regSessID", "subjectScheduleID" })
+    }
+)
 public class SubjectRegister {
 
     @Id
@@ -38,21 +42,21 @@ public class SubjectRegister {
     @Column(nullable = false)
     private Timestamp createdAt;
 
+    @ToString.Exclude
+    @JsonBackReference
     @ManyToOne
-    @MapsId("studentID")
     @JoinColumn(name = "studentID")
     private Subject subject;
 
+    @ToString.Exclude
     @ManyToOne
-    @MapsId("regSessID")
     @JoinColumn(name = "regSessID")
+    @JsonBackReference
     private RegisterSession registerSession;
 
+    @ToString.Exclude
     @ManyToOne
-    @MapsId("subjectScheduleID")
     @JoinColumn(name = "subjectScheduleID")
+    @JsonBackReference
     private SubjectSchedule subjectSchedule;
-
-    @EmbeddedId
-    private SubjectRegisterKey subjectRegisterKey;
 }

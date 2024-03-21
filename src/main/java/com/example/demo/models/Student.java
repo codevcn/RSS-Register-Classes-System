@@ -65,6 +65,6 @@ public class Student {
     @ToString.Exclude
     @JsonBackReference
     @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "username", nullable = true)
+    @JoinColumn(name = "accountID", referencedColumnName = "id", nullable = true)
     private Account account;
 }

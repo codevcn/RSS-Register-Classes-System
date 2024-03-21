@@ -7,9 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Date;
@@ -28,7 +25,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "Teacher")
-@JsonIgnoreProperties(value = { "majors", "subjects", "subjectSchedules" })
+@JsonIgnoreProperties(value = { "subjectSchedules", "teacherMajors" })
 public class Teacher {
 
     @Id
@@ -60,26 +57,13 @@ public class Teacher {
     @Column(nullable = false)
     private Boolean deleted;
 
-    @ManyToMany
-    @JoinTable(
-        name = "TeacherMajor",
-        joinColumns = @JoinColumn(name = "teacherID"),
-        inverseJoinColumns = @JoinColumn(name = "majorID")
-    )
-    @JsonManagedReference
-    private Set<Major> majors;
-
-    @ManyToMany
-    @JoinTable(
-        name = "TeacherSubject",
-        joinColumns = @JoinColumn(name = "teacherID"),
-        inverseJoinColumns = @JoinColumn(name = "subjectID")
-    )
-    @JsonManagedReference
-    private Set<Subject> subjects;
-
     @ToString.Exclude
     @OneToMany(mappedBy = "teacher")
     @JsonManagedReference
     private Set<SubjectSchedule> subjectSchedules;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "teacher")
+    @JsonManagedReference
+    private Set<TeacherMajor> teacherMajors;
 }

@@ -46,5 +46,5 @@ public class CreditDetail {
     @ManyToOne
     @JoinColumn(name = "majorBlockID", nullable = false)
     @JsonBackReference
-    private BlockOfMajor majorBlock;
+    private BlockOfMajor blockOfMajor;
 }
