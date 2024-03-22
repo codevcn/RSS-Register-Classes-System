@@ -51,7 +51,7 @@ public class Admin {
 
     @ToString.Exclude
     @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "accountID", referencedColumnName = "id", nullable = true, unique = true)
     @JsonBackReference
     private Account account;
 }

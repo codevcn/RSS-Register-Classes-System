@@ -7,6 +7,7 @@ import com.example.demo.utils.exceptions.CustomBaseException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -58,7 +59,7 @@ public class ExceptionCatcher {
         Helpers.logException("Any Exception", exception);
         Helpers.printStackTrace(exception);
 
-        ExceptionResDTO resBody = new ExceptionResDTO(exception, exception.getMessage());
+        ExceptionResDTO resBody = new ExceptionResDTO(exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resBody);
     }
@@ -77,7 +78,7 @@ public class ExceptionCatcher {
             exception.getBindingResult().getAllErrors().get(0).getDefaultMessage()
         );
 
-        ExceptionResDTO resBody = new ExceptionResDTO(exception, errorMessage);
+        ExceptionResDTO resBody = new ExceptionResDTO(errorMessage);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resBody);
     }
@@ -92,7 +93,7 @@ public class ExceptionCatcher {
 
         String errorMessage = Helpers.specifyErrorMessage(exception.getMessage());
 
-        ExceptionResDTO resBody = new ExceptionResDTO(exception, errorMessage);
+        ExceptionResDTO resBody = new ExceptionResDTO(errorMessage);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resBody);
     }
@@ -105,9 +106,24 @@ public class ExceptionCatcher {
 
         String errorMessage = Helpers.specifyErrorMessage(exception.getMessage());
 
-        ExceptionResDTO resBody = new ExceptionResDTO(exception, errorMessage);
+        ExceptionResDTO resBody = new ExceptionResDTO(errorMessage);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resBody);
+    }
+
+    // catch api authorization exceptions
+    @ExceptionHandler({ AccessDeniedException.class })
+    public ResponseEntity<ExceptionResDTO> handleAccessDeniedException(
+        AccessDeniedException exception
+    ) {
+        Helpers.logException("Api Authorization Exception", exception);
+        Helpers.printStackTrace(exception);
+
+        String errorMessage = Helpers.specifyErrorMessage(exception.getMessage());
+
+        ExceptionResDTO resBody = new ExceptionResDTO(errorMessage);
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(resBody);
     }
 
     // catch custom exceptions
@@ -119,7 +135,6 @@ public class ExceptionCatcher {
         String errorMessage = Helpers.specifyErrorMessage(exception.getMessage());
 
         CustomExceptionResDTO resBody = new CustomExceptionResDTO(exception, errorMessage);
-        resBody.setHttpStatus(HttpStatus.BAD_REQUEST);
 
         return ResponseEntity.status(resBody.getHttpStatus()).body(resBody);
     }

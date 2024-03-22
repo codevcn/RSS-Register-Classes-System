@@ -6,5 +6,6 @@ public class Names {
 
         public static final String AUTH_EXCEPTION = "Auth Exception";
         public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+        public static final String BAD_REQUEST = "Bad Request From Client";
     }
 }

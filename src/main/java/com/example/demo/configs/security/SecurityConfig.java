@@ -30,9 +30,6 @@ public class SecurityConfig {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private CustomAuthEntryPoint customAuthEntryPoint;
-
-    @Autowired
     private ClientProps clientProps;
 
     @Bean
@@ -51,12 +48,17 @@ public class SecurityConfig {
             .authorizeHttpRequests(
                 authz ->
                     authz
-                        .requestMatchers("auth/**", "subjects/**", "student/**", "major/**")
+                        .requestMatchers(
+                            "auth/**",
+                            "subjects/**",
+                            "student/**",
+                            "major/**",
+                            "test/**"
+                        )
                         .permitAll()
                         .anyRequest()
                         .authenticated()
             )
-            .exceptionHandling(exHdlng -> exHdlng.authenticationEntryPoint(customAuthEntryPoint))
             .sessionManagement(
                 ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
