@@ -5,7 +5,8 @@ import java.sql.Date;
 public class StudentResDTOs {
 
     public static record GetStudentInfoResDTO(
-        String id,
+        Long id,
+        String studentCode,
         String phone,
         String fullName,
         Date birthday,
