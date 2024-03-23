@@ -2,7 +2,7 @@ package com.example.demo.DTOs.response;
 
 import java.sql.Date;
 
-public class AdminResDTOs {
+public class AdminResDTO {
 
     public static record GetAdminAccountInfoResDTO(
         Integer id,

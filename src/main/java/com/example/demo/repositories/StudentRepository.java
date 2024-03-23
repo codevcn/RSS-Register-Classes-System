@@ -22,4 +22,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         nativeQuery = true
     )
     Student findStudentInfor(String username);
+
+    @Query(
+        value = "select *" + " from Student u" + " where u.accountID = ?1" + " and u.deleted = 0",
+        nativeQuery = true
+    )
+    Student findByAccountID(Long accountID);
 }

@@ -2,10 +2,11 @@ package com.example.demo.DTOs.response;
 
 //import com.example.demo.DTOs.response.StudentResDTOs.MajorOfSubjectResDTO;
 
-public class MajorResDTOs {
+public class MajorResDTO {
 
     public static record GetMajorInfoResDTO(
-        String id,
+        Long id,
+        String majorCode,
         String name
         // Date updatedAt,
         // Long creditCount,

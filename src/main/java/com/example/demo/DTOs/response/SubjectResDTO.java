@@ -1,7 +1,7 @@
 package com.example.demo.DTOs.response;
 
+import com.example.demo.models.Major;
 import java.sql.Timestamp;
-import java.util.List;
 
 public class SubjectResDTO {
 
@@ -11,8 +11,6 @@ public class SubjectResDTO {
         Long creditCount,
         MajorOfSubjectResDTO major
     ) {}
-
-    public static record TeacherOfSubjectResDTO(String teacherID, String teacherName) {}
 
     public static record GetAllSubjectInfoResDTO(
         String id,
@@ -24,20 +22,22 @@ public class SubjectResDTO {
 
     public static record MajorOfSubjectResDTO(String majorID, String majorName) {}
 
-    public static record SubjectAndAllMajorsInfoDTO(
-        GetAllSubjectInfoResDTO subjectInfo,
-        List<MajorOfSubjectResDTO> allMajors
-    ) {}
-
-    public static record CreditOfSubjectResDTO(Long creditID) {}
-
     public static record CreateSubjectInfoResDTO(
-        String id,
+        Long id,
         String name,
+        Long creditCount,
         Timestamp createdAt,
         Timestamp updatedAt,
+        Major major
+    ) {}
+
+    public static record GetSubjectResDTO(
+        Long id,
+        String name,
         Long creditCount,
-        CreditOfSubjectResDTO credit,
-        MajorOfSubjectResDTO major
+        Timestamp createdAt,
+        Timestamp updatedAt,
+        Major major,
+        Boolean deleted
     ) {}
 }

@@ -22,4 +22,12 @@ public class AuthService {
             )
         );
     }
+
+    public Authentication loginStudent(LoginReqDTO loginDTO) throws AuthenticationException {
+        return this.login(loginDTO);
+    }
+
+    public Authentication loginAdmin(LoginReqDTO loginDTO) throws AuthenticationException {
+        return this.login(loginDTO);
+    }
 }

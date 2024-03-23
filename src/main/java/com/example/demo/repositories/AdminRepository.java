@@ -6,15 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AdminRepository extends JpaRepository<Admin, Long> {
     @Query(value = "select * from Admin where id = ?1", nativeQuery = true)
-    Admin findByID(Integer id);
+    Admin findByID(Long id);
 
     @Query(value = "select * from Admin where accountID = ?1", nativeQuery = true)
     Admin findByAccountUsername(String username);
 
-    @Query(
-        value = "select * from Account where username = ?1 and u.deleted = 0",
-        nativeQuery = true
-    )
+    @Query(value = "select * from Account where username = ?1 and deleted = 0", nativeQuery = true)
     Admin findAdminInfor(String username);
+
     // void deleteById(String id);
+
+    @Query(value = "select * from Admin where accountID = ?1", nativeQuery = true)
+    Admin findByAccountID(Long accountID);
 }

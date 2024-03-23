@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOs.response.StudentResDTOs;
+import com.example.demo.DTOs.response.StudentResDTO;
 import com.example.demo.models.Major;
 import com.example.demo.models.Student;
 import com.example.demo.repositories.StudentRepository;
@@ -39,7 +39,7 @@ public class StudentService {
     //     student.setMajor(major);
     //     return studentRepository.save(student);
     // }
-    public Student updateStudent(Long id, StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo) {
+    public Student updateStudent(Long id, StudentResDTO.GetStudentInfoResDTO updatedStudentInfo) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             Student student = optionalStudent.get();
@@ -59,5 +59,9 @@ public class StudentService {
 
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);
+    }
+
+    public Student findStudentByAccountID(Long id) {
+        return studentRepository.findByAccountID(id);
     }
 }

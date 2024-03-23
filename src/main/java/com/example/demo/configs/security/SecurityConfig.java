@@ -32,6 +32,9 @@ public class SecurityConfig {
     @Autowired
     private ClientProps clientProps;
 
+    @Autowired
+    private CustomAuthEntryPoint customAuthEntryPoint;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -48,17 +51,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(
                 authz ->
                     authz
-                        .requestMatchers(
-                            "auth/**",
-                            "subjects/**",
-                            "student/**",
-                            "major/**",
-                            "test/**"
-                        )
+                        .requestMatchers("auth/login/**", "subjects/**", "student/**", "major/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
             )
+            .exceptionHandling(exHdlng -> exHdlng.authenticationEntryPoint(customAuthEntryPoint))
             .sessionManagement(
                 ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )

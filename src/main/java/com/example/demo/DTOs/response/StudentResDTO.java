@@ -2,7 +2,7 @@ package com.example.demo.DTOs.response;
 
 import java.sql.Date;
 
-public class StudentResDTOs {
+public class StudentResDTO {
 
     public static record GetStudentInfoResDTO(
         Long id,

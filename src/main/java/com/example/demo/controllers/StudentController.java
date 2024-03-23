@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTOs.response.StudentResDTOs;
-import com.example.demo.DTOs.response.StudentResDTOs.GetStudentInfoResDTO;
+import com.example.demo.DTOs.response.StudentResDTO;
+import com.example.demo.DTOs.response.StudentResDTO.GetStudentInfoResDTO;
 import com.example.demo.models.Student;
 import com.example.demo.services.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -99,7 +99,7 @@ public class StudentController {
     @PutMapping("update-student/{id}")
     public ResponseEntity<GetStudentInfoResDTO> updateStudent(
         @PathVariable("id") Long id,
-        @RequestBody StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo
+        @RequestBody StudentResDTO.GetStudentInfoResDTO updatedStudentInfo
     ) {
         System.out.println("ID của sinh viên cần cập nhật: " + id);
         Student updatedStudent = studentService.updateStudent(id, updatedStudentInfo);
