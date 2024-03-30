@@ -26,6 +26,11 @@ public class StudentService {
         return (List<Student>) studentRepository.findAll();
     }
 
+    public List<Student> getAllActiveStudents() {
+        return studentRepository.findByDeletedFalse();
+    }
+
+
     // public Student updateStudent(String id, StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo) {
     //     //Student student = studentRepository.findById(id).orElse(null);
     //     Student student = studentRepository.findById(id);
@@ -48,14 +53,24 @@ public class StudentService {
             student.setGender(updatedStudentInfo.gender());
             student.setBirthday(updatedStudentInfo.birthday());
             student.setPhone(updatedStudentInfo.phone());
-            Major major = new Major();
-            major.setName(updatedStudentInfo.major());
-            student.setMajor(major);
+            student.setMajor(updatedStudentInfo.major());
             return studentRepository.save(student);
         } else {
             return null;
         }
     }
+
+    public Student hiddenStudent(Long id) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setDeleted(true);
+            return studentRepository.save(student);
+        } else {
+            return null;
+        }
+    }
+
 
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);

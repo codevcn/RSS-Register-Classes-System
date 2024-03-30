@@ -1,6 +1,7 @@
 package com.example.demo.DTOs.response;
 
 import java.sql.Date;
+import com.example.demo.models.Major;
 
 public class StudentResDTO {
 
@@ -11,7 +12,9 @@ public class StudentResDTO {
         String fullName,
         Date birthday,
         String gender,
-        String major
+        Major major,
+        Boolean deleted
+        //Boolean deleted
         //String accountUsername,
         //String role
     ) {}

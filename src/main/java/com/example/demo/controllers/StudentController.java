@@ -40,7 +40,8 @@ public class StudentController {
                 student.getFullName(),
                 student.getBirthday(),
                 student.getGender(),
-                student.getMajor().getName()
+                student.getMajor(),
+                    student.getDeleted()
                 //student.getAccount().getUsername(),
                 //student.getAccount().getRole().getId()
             )
@@ -50,8 +51,9 @@ public class StudentController {
     @GetMapping("get-all-student")
     public ResponseEntity<List<GetStudentInfoResDTO>> getAllStudents() {
         //System.out.printf(">>> run here 1\n");
-        List<Student> students = studentService.getAllStudents();
-        //System.out.printf(">>> run here 2\n");
+        //List<Student> students = studentService.getAllStudents();
+        List<Student> students = studentService.getAllActiveStudents();
+        // System.out.printf(">>> run here 2\n");
         // for(Student student : students){
         //     System.out.print(student.getAccount());
         // }
@@ -66,7 +68,8 @@ public class StudentController {
                     student.getFullName(),
                     student.getBirthday(),
                     student.getGender(),
-                    student.getMajor().getName()
+                    student.getMajor(),
+                    student.getDeleted()
                     //student.getAccount().getUsername(),
                     //student.getAccount().getRole().getId()
                 ))
@@ -91,7 +94,8 @@ public class StudentController {
             student.getFullName(),
             student.getBirthday(),
             student.getGender(),
-            student.getMajor().getName()
+            student.getMajor(),
+                    student.getDeleted()
         );
         return ResponseEntity.ok(studentInfoDTO);
     }
@@ -101,18 +105,19 @@ public class StudentController {
         @PathVariable("id") Long id,
         @RequestBody StudentResDTO.GetStudentInfoResDTO updatedStudentInfo
     ) {
-        System.out.println("ID của sinh viên cần cập nhật: " + id);
+        // System.out.println("ID của sinh viên cần cập nhật: " + id);
+        // System.out.println("Thôgn tin của sinh viên cần cập nhật: " + updatedStudentInfo);
         Student updatedStudent = studentService.updateStudent(id, updatedStudentInfo);
         if (updatedStudent != null) {
             GetStudentInfoResDTO updatedStudentResponse = new GetStudentInfoResDTO(
                 updatedStudent.getId(),
                 updatedStudent.getStudentCode(),
-                updatedStudent.getPhone(),
                 updatedStudent.getFullName(),
-                updatedStudent.getBirthday(),
                 updatedStudent.getGender(),
-                updatedStudent.getMajor().getName()
-                //new MajorOfSubjectResDTO(updatedStudent.getMajor().getId(), updatedStudent.getMajor().getName())
+                updatedStudent.getBirthday(),
+                updatedStudent.getPhone(),
+                updatedStudent.getMajor(),
+                    updatedStudent.getDeleted()
             );
             return ResponseEntity.ok(updatedStudentResponse);
         } else {
@@ -121,7 +126,10 @@ public class StudentController {
     }
 
     @PutMapping("/hide-student/{id}")
-    public ResponseEntity<String> hideStudent(@PathVariable Long id) {
-        return ResponseEntity.ok("Student hidden successfully");
+    public ResponseEntity<String> hideStudent(@PathVariable("id") Long id) {
+        System.out.println("ID của sinh viên cần xoá: " + id);
+        studentService.hiddenStudent(id); 
+        return ResponseEntity.ok().build(); 
     }
+
 }
