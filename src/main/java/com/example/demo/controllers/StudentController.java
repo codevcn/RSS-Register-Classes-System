@@ -53,6 +53,7 @@ public class StudentController {
                 student.getPhone(),
                 student.getFullName(),
                 student.getBirthday(),
+                student.getIdcard(),
                 student.getGender(),
                 student.getMajor(),
                 student.getDeleted()
@@ -72,6 +73,7 @@ public class StudentController {
                     student.getPhone(),
                     student.getFullName(),
                     student.getBirthday(),
+                    student.getIdcard(),
                     student.getGender(),
                     student.getMajor(),
                     student.getDeleted()
@@ -91,6 +93,7 @@ public class StudentController {
             student.getPhone(),
             student.getFullName(),
             student.getBirthday(),
+            student.getIdcard(),
             student.getGender(),
             student.getMajor(),
             student.getDeleted()
@@ -111,6 +114,7 @@ public class StudentController {
                 updatedStudent.getFullName(),
                 updatedStudent.getGender(),
                 updatedStudent.getBirthday(),
+                updatedStudent.getIdcard(),
                 updatedStudent.getPhone(),
                 updatedStudent.getMajor(),
                 updatedStudent.getDeleted()
@@ -135,6 +139,7 @@ public class StudentController {
         System.out.println("Full Name: " + request.getFullName());
         System.out.println("Gender: " + request.getGender());
         System.out.println("Birthday: " + request.getBirthday());
+        System.out.println("ID card: " + request.getIdcard());
         System.out.println("Phone: " + request.getPhone());
         System.out.println("Major ID: " + request.getMajor());
 
@@ -156,9 +161,10 @@ public class StudentController {
         String phone = request.getPhone();
         String fullName = request.getFullName();
         String birthday = request.getBirthday(); 
+        String idcard = request.getIdcard(); 
         String gender = request.getGender();
         Long majorID = request.getMajor().getId();
-        studentRepository.saveStudent(studentCode, phone, fullName, birthday, gender, majorID, accountId);
+        studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, majorID, accountId);
         System.out.println("Thành công!!!");
         
 

@@ -1,9 +1,11 @@
 package com.example.demo.services;
 
 import com.example.demo.DTOs.response.StudentResDTO;
+import com.example.demo.models.Account;
 import com.example.demo.models.Major;
 import com.example.demo.models.Student;
 import com.example.demo.repositories.StudentRepository;
+import com.example.demo.repositories.AccountRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,9 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     public Student getStudentInfo(@NonNull HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
@@ -50,13 +55,23 @@ public class StudentService {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             Student student = optionalStudent.get();
+            Long accountId = student.getAccount().getId();
+
             student.setDeleted(true);
-            return studentRepository.save(student);
+            studentRepository.save(student);
+
+            Optional<Account> optionalAccount = accountRepository.findById(accountId);
+            if (optionalAccount.isPresent()) {
+                Account account = optionalAccount.get();
+                account.setDeleted(true);
+                accountRepository.save(account);
+            }
+
+            return student;
         } else {
             return null;
         }
     }
-
 
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);

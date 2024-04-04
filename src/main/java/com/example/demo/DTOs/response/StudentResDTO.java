@@ -11,6 +11,7 @@ public class StudentResDTO {
         String phone,
         String fullName,
         Date birthday,
+        String idcard,
         String gender,
         Major major,
         Boolean deleted
