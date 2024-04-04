@@ -30,20 +30,6 @@ public class StudentService {
         return studentRepository.findByDeletedFalse();
     }
 
-
-    // public Student updateStudent(String id, StudentResDTOs.GetStudentInfoResDTO updatedStudentInfo) {
-    //     //Student student = studentRepository.findById(id).orElse(null);
-    //     Student student = studentRepository.findById(id);
-    //     student.setId(updatedStudentInfo.id());
-    //     student.setFullName(updatedStudentInfo.fullName());
-    //     student.setGender(updatedStudentInfo.gender());
-    //     student.setBirthday(updatedStudentInfo.birthday());
-    //     student.setPhone(updatedStudentInfo.phone());
-    //     Major major = new Major();
-    //     major.setName(updatedStudentInfo.major());
-    //     student.setMajor(major);
-    //     return studentRepository.save(student);
-    // }
     public Student updateStudent(Long id, StudentResDTO.GetStudentInfoResDTO updatedStudentInfo) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {

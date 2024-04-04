@@ -1,9 +1,13 @@
 package com.example.demo.controllers;
 
+import com.example.demo.DTOs.response.AccountResDTO;
 import com.example.demo.DTOs.response.StudentResDTO;
 import com.example.demo.DTOs.response.StudentResDTO.GetStudentInfoResDTO;
+import com.example.demo.DTOs.response.AccountResDTO.GetAccountResDTO;
+import com.example.demo.models.Account;
 import com.example.demo.models.Student;
 import com.example.demo.services.StudentService;
+import com.example.demo.DTOs.request.CreateStudentRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +22,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import com.example.demo.repositories.AccountRepository;
+import com.example.demo.repositories.StudentRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping("student")
@@ -25,6 +33,12 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @GetMapping("get-student-info")
     @PreAuthorize("hasAuthority('STUDENT')")
@@ -41,23 +55,14 @@ public class StudentController {
                 student.getBirthday(),
                 student.getGender(),
                 student.getMajor(),
-                    student.getDeleted()
-                //student.getAccount().getUsername(),
-                //student.getAccount().getRole().getId()
+                student.getDeleted()
             )
         );
     }
 
     @GetMapping("get-all-student")
     public ResponseEntity<List<GetStudentInfoResDTO>> getAllStudents() {
-        //System.out.printf(">>> run here 1\n");
-        //List<Student> students = studentService.getAllStudents();
         List<Student> students = studentService.getAllActiveStudents();
-        // System.out.printf(">>> run here 2\n");
-        // for(Student student : students){
-        //     System.out.print(student.getAccount());
-        // }
-        // System.out.printf(">>> run here 3\n");
         List<GetStudentInfoResDTO> studentInfoList = students
             .stream()
             .map(student ->
@@ -70,23 +75,16 @@ public class StudentController {
                     student.getGender(),
                     student.getMajor(),
                     student.getDeleted()
-                    //student.getAccount().getUsername(),
-                    //student.getAccount().getRole().getId()
                 ))
             .collect(Collectors.toList());
         return ResponseEntity.ok(studentInfoList);
     }
 
-    // @GetMapping("get-student/{studentID}")
     @GetMapping("get-student/{id}")
     public ResponseEntity<GetStudentInfoResDTO> getSelectedStudentInfo(
-        // @PathVariable("studentID") String studentID
         @PathVariable("id") Long id
     ) {
         Student student = studentService.getStudentById(id);
-        // System.out.printf(">>> run here 111\n");
-        // System.out.print(student);
-        // System.out.printf(">>> run here 222\n");
         GetStudentInfoResDTO studentInfoDTO = new GetStudentInfoResDTO(
             student.getId(),
             student.getStudentCode(),
@@ -95,7 +93,7 @@ public class StudentController {
             student.getBirthday(),
             student.getGender(),
             student.getMajor(),
-                    student.getDeleted()
+            student.getDeleted()
         );
         return ResponseEntity.ok(studentInfoDTO);
     }
@@ -105,8 +103,6 @@ public class StudentController {
         @PathVariable("id") Long id,
         @RequestBody StudentResDTO.GetStudentInfoResDTO updatedStudentInfo
     ) {
-        // System.out.println("ID của sinh viên cần cập nhật: " + id);
-        // System.out.println("Thôgn tin của sinh viên cần cập nhật: " + updatedStudentInfo);
         Student updatedStudent = studentService.updateStudent(id, updatedStudentInfo);
         if (updatedStudent != null) {
             GetStudentInfoResDTO updatedStudentResponse = new GetStudentInfoResDTO(
@@ -117,7 +113,7 @@ public class StudentController {
                 updatedStudent.getBirthday(),
                 updatedStudent.getPhone(),
                 updatedStudent.getMajor(),
-                    updatedStudent.getDeleted()
+                updatedStudent.getDeleted()
             );
             return ResponseEntity.ok(updatedStudentResponse);
         } else {
@@ -127,9 +123,46 @@ public class StudentController {
 
     @PutMapping("/hide-student/{id}")
     public ResponseEntity<String> hideStudent(@PathVariable("id") Long id) {
-        System.out.println("ID của sinh viên cần xoá: " + id);
         studentService.hiddenStudent(id); 
         return ResponseEntity.ok().build(); 
+    }
+
+    @PostMapping("/create-student")
+    @Transactional
+    public ResponseEntity<String> createStudent(@RequestBody CreateStudentRequest request) {
+        System.out.println("Thông tin sinh viên mới:");
+        System.out.println("Student Code: " + request.getStudentCode());
+        System.out.println("Full Name: " + request.getFullName());
+        System.out.println("Gender: " + request.getGender());
+        System.out.println("Birthday: " + request.getBirthday());
+        System.out.println("Phone: " + request.getPhone());
+        System.out.println("Major ID: " + request.getMajor());
+
+        System.out.println("Thông tin tài khoản:");
+        System.out.println("Username: " + request.getUsername());
+        System.out.println("Password: " + request.getPassword());
+
+        //Thêm tài khoản
+        String username = request.getUsername();
+        String password = request.getPassword();
+        
+        
+        accountRepository.saveAccount(username, password);
+        Long accountId = accountRepository.findAccountIdByUsername(username);
+        System.out.println("accountId: " + accountId);
+
+        //Thêm sinh viên
+        String studentCode = request.getStudentCode();
+        String phone = request.getPhone();
+        String fullName = request.getFullName();
+        String birthday = request.getBirthday(); 
+        String gender = request.getGender();
+        Long majorID = request.getMajor().getId();
+        studentRepository.saveStudent(studentCode, phone, fullName, birthday, gender, majorID, accountId);
+        System.out.println("Thành công!!!");
+        
+
+        return ResponseEntity.ok("Student created successfully!");
     }
 
 }
