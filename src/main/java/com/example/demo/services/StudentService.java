@@ -43,6 +43,7 @@ public class StudentService {
             student.setFullName(updatedStudentInfo.fullName());
             student.setGender(updatedStudentInfo.gender());
             student.setBirthday(updatedStudentInfo.birthday());
+            student.setIdcard(updatedStudentInfo.idcard());
             student.setPhone(updatedStudentInfo.phone());
             student.setMajor(updatedStudentInfo.major());
             return studentRepository.save(student);
@@ -80,4 +81,5 @@ public class StudentService {
     public Student findStudentByAccountID(Long id) {
         return studentRepository.findByAccountID(id);
     }
+
 }

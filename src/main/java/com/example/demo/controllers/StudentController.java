@@ -82,6 +82,27 @@ public class StudentController {
         return ResponseEntity.ok(studentInfoList);
     }
 
+    @GetMapping("all-student")
+    public ResponseEntity<List<GetStudentInfoResDTO>> getAllStudentWithAllStatus() {
+        List<Student> students = studentService.getAllStudents();
+        List<GetStudentInfoResDTO> studentInfoList = students
+            .stream()
+            .map(student ->
+                new GetStudentInfoResDTO(
+                    student.getId(),
+                    student.getStudentCode(),
+                    student.getPhone(),
+                    student.getFullName(),
+                    student.getBirthday(),
+                    student.getIdcard(),
+                    student.getGender(),
+                    student.getMajor(),
+                    student.getDeleted()
+                ))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(studentInfoList);
+    }
+
     @GetMapping("get-student/{id}")
     public ResponseEntity<GetStudentInfoResDTO> getSelectedStudentInfo(
         @PathVariable("id") Long id
