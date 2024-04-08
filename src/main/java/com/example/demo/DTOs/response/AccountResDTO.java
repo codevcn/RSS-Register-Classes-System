@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 public class AccountResDTO {
 
+    public static record GetAccountResDTO(Integer id, String username, String password) {}
+
     public static record GetAccountInfoResDTO(
         Long id,
         String username,
@@ -15,8 +17,6 @@ public class AccountResDTO {
         Boolean deleted,
         Role role
     ) {}
-
-    public static record GetAccountResDTO(String username, String password, Timestamp updatedAt) {}
 
     public static record GetAllusernameResDTO(Long id, String username) {}
 

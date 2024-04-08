@@ -47,6 +47,9 @@ public class Student {
     @Column(nullable = false, length = 10)
     private String gender;
 
+    @Column(nullable = false, length = 12)
+    private String idcard;
+
     @ToString.Exclude
     @JsonBackReference
     @ManyToOne
