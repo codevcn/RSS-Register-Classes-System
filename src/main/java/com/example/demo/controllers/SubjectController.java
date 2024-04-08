@@ -3,13 +3,17 @@ package com.example.demo.controllers;
 import com.example.demo.DTOs.response.SubjectResDTO;
 import com.example.demo.DTOs.response.SubjectResDTO.*;
 import com.example.demo.models.Subject;
+import com.example.demo.repositories.SubjectRepository;
 import com.example.demo.services.SubjectService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +25,8 @@ public class SubjectController {
 
     @Autowired
     private SubjectService subjectService;
-
+    @Autowired
+    private SubjectRepository subjectRepository;
     // @GetMapping("{input}")
     // public ResponseEntity<GetSubjectInfoResDTO> getSubjectInfo(@PathVariable
     // String input)
@@ -39,10 +44,11 @@ public class SubjectController {
     // }
 
     @GetMapping("get-subject/{id}")
-    public ResponseEntity<GetSubjectResDTO> getSubject(@PathVariable("id") String id) {
-        Subject subject = subjectService.getSubjectById(id);
+    public ResponseEntity<GetSubjectResDTO> getSubject(@PathVariable("id") Long id) {
+        Subject subject = subjectRepository.findSubjectbyid(id);
         GetSubjectResDTO subjectInfoDTO = new GetSubjectResDTO(
             subject.getId(),
+            subject.getSubjectCode(),
             subject.getName(),
             subject.getCreditsCount(),
             subject.getCreatedAt(),
@@ -53,15 +59,15 @@ public class SubjectController {
         return ResponseEntity.ok(subjectInfoDTO);
     }
 
-    @PutMapping("create-subject")
+    @PostMapping("create-subject")
     public ResponseEntity<CreateSubjectInfoResDTO> CreateSubject(
         @RequestBody CreateSubjectInfoResDTO CreateSubjectInfo
     ) {
-        System.out.println(">>>>>" + CreateSubjectInfo);
         Subject createsubject = subjectService.createSubject(CreateSubjectInfo);
         CreateSubjectInfoResDTO subjectInfoDTO = new CreateSubjectInfoResDTO(
             createsubject.getId(),
             createsubject.getName(),
+            createsubject.getSubjectCode(),
             createsubject.getCreditsCount(),
             createsubject.getCreatedAt(),
             createsubject.getUpdatedAt(),
@@ -72,13 +78,21 @@ public class SubjectController {
 
     @GetMapping("get-all-subject")
     public ResponseEntity<List<GetSubjectResDTO>> getAllSubjects() {
-        List<Subject> subjects = subjectService.getAllSubjects();
-        List<GetSubjectResDTO> subjectInfoList = subjects
+        List<Subject> allSubjects = subjectRepository.findAll();
+        List<Subject> ListAllSubject = new ArrayList<>();
+
+        for (Subject subject : allSubjects) {
+            if (subject.getDeleted() == false) {
+                ListAllSubject.add(subject);
+            }
+        }
+        List<GetSubjectResDTO> subjectInfoList = ListAllSubject
             .stream()
             .map(
                 subject ->
                     new GetSubjectResDTO(
                         subject.getId(),
+                        subject.getSubjectCode(),
                         subject.getName(),
                         subject.getCreditsCount(),
                         subject.getCreatedAt(),
@@ -93,12 +107,14 @@ public class SubjectController {
 
     @PutMapping("update-subject/{id}")
     public ResponseEntity<GetSubjectResDTO> updateSubject(
-        @PathVariable("id") String id,
+        @PathVariable("id") Long id,
         @RequestBody SubjectResDTO.GetSubjectResDTO updatedSubjectInfo
     ) {
+        System.out.println("<<<"+updatedSubjectInfo);
         Subject updatedSubject = subjectService.updateSubject(id, updatedSubjectInfo);
         GetSubjectResDTO updatedSubjectResponse = new GetSubjectResDTO(
             updatedSubject.getId(),
+            updatedSubject.getSubjectCode(),
             updatedSubject.getName(),
             updatedSubject.getCreditsCount(),
             updatedSubject.getCreatedAt(),
