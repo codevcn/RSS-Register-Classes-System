@@ -8,5 +8,4 @@ public class AuthMessage {
     public static final String BAD_AUTHORITY = "Tài khoản không có quyền truy cập tài nguyên";
     public static final String INCORRECT_PASSWORD = "Mật khẩu nhập lại không đúng!";
     public static final String USERNAME_EXITED = "Đã tồn tại tên người dùng!";
-
 }

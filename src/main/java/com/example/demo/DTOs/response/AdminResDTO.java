@@ -1,8 +1,7 @@
 package com.example.demo.DTOs.response;
 
-import java.sql.Date;
-
 import com.example.demo.models.Account;
+import java.sql.Date;
 
 public class AdminResDTO {
 

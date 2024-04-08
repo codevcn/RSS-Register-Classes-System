@@ -8,8 +8,8 @@ import com.example.demo.models.Admin;
 import com.example.demo.repositories.AccountRepository;
 import com.example.demo.services.AccountService;
 import com.example.demo.services.AdminService;
-import com.example.demo.utils.messages.AuthMessage;
 import com.example.demo.utils.exceptions.IncorrectPasswordException;
+import com.example.demo.utils.messages.AuthMessage;
 import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,31 +29,34 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
     @Autowired
     private AccountService accountService;
+
     @Autowired
     private AccountRepository accountRepository;
 
     @GetMapping("get-admin")
-    public ResponseEntity<AdminResDTO.GetAdminInfoResDTO> getAdminAccountInfo(
-            Principal principal) {
+    public ResponseEntity<AdminResDTO.GetAdminInfoResDTO> getAdminAccountInfo(Principal principal) {
         String username = principal.getName();
         Account adminAccount = accountService.getAccountInfo(username);
         Long id = adminAccount.getId();
         Admin admin = adminService.findAdminByAccountID(id);
         AdminResDTO.GetAdminInfoResDTO adminInfoDTO = new AdminResDTO.GetAdminInfoResDTO(
-                admin.getId(),
-                admin.getIDCard(),
-                admin.getFullName(),
-                admin.getBirthday(),
-                admin.getGender(),
-                admin.getAccount());
+            admin.getId(),
+            admin.getIDCard(),
+            admin.getFullName(),
+            admin.getBirthday(),
+            admin.getGender(),
+            admin.getAccount()
+        );
         return ResponseEntity.ok(adminInfoDTO);
     }
 
     @PutMapping("update-admin")
     public ResponseEntity<AdminResDTO.GetAdminInfoResDTO> updateAdmin(
-            @RequestBody AdminResDTO.GetAdminInfoResDTO updatedAdminInfo) {
+        @RequestBody AdminResDTO.GetAdminInfoResDTO updatedAdminInfo
+    ) {
         String test = updatedAdminInfo.account().getUsername();
         System.out.println("????" + updatedAdminInfo);
         Long IDaccount = updatedAdminInfo.account().getId();
@@ -67,19 +70,21 @@ public class AdminController {
         Admin updatedAdmin = adminService.updateAdmin(IDaccount, updatedAdminInfo);
         Account updateAccount = accountService.updateAccount(IDaccount, updatedAdminInfo.account());
         AdminResDTO.GetAdminInfoResDTO updatedAdminResponse = new AdminResDTO.GetAdminInfoResDTO(
-                updatedAdmin.getId(),
-                updatedAdmin.getIDCard(),
-                updatedAdmin.getFullName(),
-                updatedAdmin.getBirthday(),
-                updatedAdmin.getGender(),
-                updatedAdmin.getAccount());
+            updatedAdmin.getId(),
+            updatedAdmin.getIDCard(),
+            updatedAdmin.getFullName(),
+            updatedAdmin.getBirthday(),
+            updatedAdmin.getGender(),
+            updatedAdmin.getAccount()
+        );
         return ResponseEntity.ok(updatedAdminResponse);
     }
 
     @PutMapping("Change-Password")
     public ResponseEntity<GetAccountResDTO> ChangePassword(
-            Principal principal,
-            @RequestBody AccountResDTO.PassResDTO Pass)throws IncorrectPasswordException  {
+        Principal principal,
+        @RequestBody AccountResDTO.PassResDTO Pass
+    ) throws IncorrectPasswordException {
         Account account = accountRepository.findByUsername(principal.getName());
         Long id = account.getId();
         String oldPass = Pass.oldPass();
@@ -98,5 +103,4 @@ public class AdminController {
         List<String> idcard = accountRepository.findAllIdCards();
         return ResponseEntity.ok(idcard);
     }
-
 }

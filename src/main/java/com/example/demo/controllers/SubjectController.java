@@ -5,7 +5,6 @@ import com.example.demo.DTOs.response.SubjectResDTO.*;
 import com.example.demo.models.Subject;
 import com.example.demo.repositories.SubjectRepository;
 import com.example.demo.services.SubjectService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,8 +24,10 @@ public class SubjectController {
 
     @Autowired
     private SubjectService subjectService;
+
     @Autowired
     private SubjectRepository subjectRepository;
+
     // @GetMapping("{input}")
     // public ResponseEntity<GetSubjectInfoResDTO> getSubjectInfo(@PathVariable
     // String input)
@@ -86,8 +87,7 @@ public class SubjectController {
                 ListAllSubject.add(subject);
             }
         }
-        List<GetSubjectResDTO> subjectInfoList = ListAllSubject
-            .stream()
+        List<GetSubjectResDTO> subjectInfoList = ListAllSubject.stream()
             .map(
                 subject ->
                     new GetSubjectResDTO(
@@ -110,7 +110,7 @@ public class SubjectController {
         @PathVariable("id") Long id,
         @RequestBody SubjectResDTO.GetSubjectResDTO updatedSubjectInfo
     ) {
-        System.out.println("<<<"+updatedSubjectInfo);
+        System.out.println("<<<" + updatedSubjectInfo);
         Subject updatedSubject = subjectService.updateSubject(id, updatedSubjectInfo);
         GetSubjectResDTO updatedSubjectResponse = new GetSubjectResDTO(
             updatedSubject.getId(),

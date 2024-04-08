@@ -1,8 +1,7 @@
 package com.example.demo.DTOs.request;
 
-import java.sql.Date;
-
 import jakarta.validation.constraints.NotBlank;
+import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +29,4 @@ public class AdminReqDTO {
 
     @NotBlank(message = "Trường giới tính không thể thiếu!")
     String gender;
-    
 }

@@ -15,7 +15,6 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
-
     public Admin getAdminAccountInfo(@NonNull HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
         return adminRepository.findByAccountUsername(username);
@@ -43,7 +42,7 @@ public class AdminService {
         admin.setIDCard(updatedAdminInfo.idcard());
         admin.setFullName(updatedAdminInfo.fullName());
         admin.setBirthday(updatedAdminInfo.birthday());
-        admin.setGender(updatedAdminInfo.gender()); 
+        admin.setGender(updatedAdminInfo.gender());
         return adminRepository.save(admin);
     }
 
