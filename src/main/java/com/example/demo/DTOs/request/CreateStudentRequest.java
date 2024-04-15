@@ -1,7 +1,6 @@
 package com.example.demo.DTOs.request;
 
 import com.example.demo.models.Major;
-
 import lombok.Getter;
 import lombok.Setter;
 

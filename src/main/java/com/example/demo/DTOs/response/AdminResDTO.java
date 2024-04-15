@@ -1,5 +1,6 @@
 package com.example.demo.DTOs.response;
 
+import com.example.demo.models.Account;
 import java.sql.Date;
 
 public class AdminResDTO {
@@ -10,8 +11,7 @@ public class AdminResDTO {
         String fullName,
         Date birthday,
         String gender,
-        String accountUsername,
-        String role
+        Account account
     ) {}
 
     public static record GetAdminInfoResDTO(
@@ -20,7 +20,6 @@ public class AdminResDTO {
         String fullName,
         Date birthday,
         String gender,
-        String accountUsername,
-        String role
+        Account account
     ) {}
 }

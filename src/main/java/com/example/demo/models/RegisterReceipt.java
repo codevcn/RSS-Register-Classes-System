@@ -37,7 +37,7 @@ public class RegisterReceipt {
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "studentID", nullable = false)
+    @JoinColumn(name = "studentID", nullable = false, unique = true)
     @JsonBackReference
     private Student student;
 

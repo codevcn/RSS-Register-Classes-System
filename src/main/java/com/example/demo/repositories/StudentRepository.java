@@ -1,12 +1,12 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.Student;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -41,9 +41,17 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Modifying
     @Query(
         value = "INSERT INTO Student (studentCode, phone, fullName, birthday, gender, majorID, accountID, createdAt, updatedAt, deleted, IDCard, year) " +
-            "VALUES (:studentCode, :phone, :fullName, :birthday, :gender, :majorID, :accountID, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, :idcard, YEAR(GETDATE()))",
+        "VALUES (:studentCode, :phone, :fullName, :birthday, :gender, :majorID, :accountID, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, :idcard, YEAR(GETDATE()))",
         nativeQuery = true
     )
-    void saveStudent(@Param("studentCode") String studentCode, @Param("phone") String phone, @Param("fullName") String fullName, @Param("birthday") String birthday, @Param("idcard") String idcard, @Param("gender") String gender, @Param("majorID") Long majorID, @Param("accountID") Long accountID);
-
+    void saveStudent(
+        @Param("studentCode") String studentCode,
+        @Param("phone") String phone,
+        @Param("fullName") String fullName,
+        @Param("birthday") String birthday,
+        @Param("idcard") String idcard,
+        @Param("gender") String gender,
+        @Param("majorID") Long majorID,
+        @Param("accountID") Long accountID
+    );
 }

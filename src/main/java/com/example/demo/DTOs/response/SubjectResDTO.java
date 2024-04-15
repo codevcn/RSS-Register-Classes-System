@@ -24,6 +24,7 @@ public class SubjectResDTO {
 
     public static record CreateSubjectInfoResDTO(
         Long id,
+        String subjectCode,
         String name,
         Long creditCount,
         Timestamp createdAt,
@@ -33,6 +34,7 @@ public class SubjectResDTO {
 
     public static record GetSubjectResDTO(
         Long id,
+        String subjectCode,
         String name,
         Long creditCount,
         Timestamp createdAt,

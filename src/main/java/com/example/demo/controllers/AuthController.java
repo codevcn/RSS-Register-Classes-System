@@ -59,6 +59,7 @@ public class AuthController {
         @NonNull HttpServletResponse httpServletResponse
     ) throws CustomAuthException {
         Authentication authentication;
+        loginDTO.setUsername(loginDTO.getUsername().trim());
         try {
             authentication = authService.loginStudent(loginDTO);
         } catch (Exception e) {
@@ -86,6 +87,7 @@ public class AuthController {
         @NonNull HttpServletResponse httpServletResponse
     ) throws CustomAuthException {
         Authentication authentication;
+        loginDTO.setUsername(loginDTO.getUsername().trim());
         try {
             authentication = authService.loginAdmin(loginDTO);
         } catch (Exception e) {

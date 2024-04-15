@@ -1,5 +1,6 @@
 package com.example.demo.DTOs.response;
 
+import com.example.demo.models.Major;
 import java.sql.Date;
 import com.example.demo.models.Major;
 

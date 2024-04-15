@@ -4,6 +4,7 @@ import com.example.demo.DTOs.response.StudentResDTO;
 import com.example.demo.models.Account;
 import com.example.demo.models.Major;
 import com.example.demo.models.Student;
+import com.example.demo.repositories.AccountRepository;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.repositories.AccountRepository;
 import jakarta.servlet.http.HttpServletRequest;

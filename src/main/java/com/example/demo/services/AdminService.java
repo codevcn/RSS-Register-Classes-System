@@ -28,8 +28,8 @@ public class AdminService {
         return (List<Admin>) adminRepository.findAll();
     }
 
-    public Admin getAdminById(String accountID) {
-        return adminRepository.findByAccountUsername(accountID);
+    public Admin getAdminUsername(String accountID) {
+        return adminRepository.findAdminInfor(accountID);
     }
 
     public Admin createAdmin(Admin admin) {
@@ -37,7 +37,8 @@ public class AdminService {
     }
 
     public Admin updateAdmin(Long id, AdminResDTO.GetAdminInfoResDTO updatedAdminInfo) {
-        Admin admin = adminRepository.findByID(id);
+        Admin admin = adminRepository.findByAccountID(id);
+        admin.setAccount(updatedAdminInfo.account());
         admin.setIDCard(updatedAdminInfo.idcard());
         admin.setFullName(updatedAdminInfo.fullName());
         admin.setBirthday(updatedAdminInfo.birthday());
