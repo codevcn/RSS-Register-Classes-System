@@ -53,26 +53,31 @@ public class StudentService {
         }
     }
 
-    public Student hiddenStudent(Long id) {
-        Optional<Student> optionalStudent = studentRepository.findById(id);
-        if (optionalStudent.isPresent()) {
-            Student student = optionalStudent.get();
-            Long accountId = student.getAccount().getId();
+    // public Student hiddenStudent(Long id) {
+    //     Optional<Student> optionalStudent = studentRepository.findById(id);
+    //     if (optionalStudent.isPresent()) {
+    //         Student student = optionalStudent.get();
+    //         Long accountId = student.getAccount().getId();
 
-            student.setDeleted(true);
-            studentRepository.save(student);
+    //         student.setDeleted(true);
+    //         studentRepository.save(student);
 
-            Optional<Account> optionalAccount = accountRepository.findById(accountId);
-            if (optionalAccount.isPresent()) {
-                Account account = optionalAccount.get();
-                account.setDeleted(true);
-                accountRepository.save(account);
-            }
+    //         Optional<Account> optionalAccount = accountRepository.findById(accountId);
+    //         if (optionalAccount.isPresent()) {
+    //             Account account = optionalAccount.get();
+    //             account.setDeleted(true);
+    //             accountRepository.save(account);
+    //         }
 
-            return student;
-        } else {
-            return null;
-        }
+    //         return student;
+    //     } else {
+    //         return null;
+    //     }
+    // }
+    public Student hideStudent(String id) {
+        Student subject = studentRepository.findStudent(id);
+        subject.setDeleted(true);
+        return studentRepository.save(subject);
     }
 
     public Student getStudentById(Long id) {

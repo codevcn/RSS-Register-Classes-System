@@ -9,6 +9,7 @@ import com.example.demo.models.Student;
 import com.example.demo.repositories.AccountRepository;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.services.StudentService;
+import com.example.demo.services.AccountService;
 import com.example.demo.DTOs.request.CreateStudentRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -37,6 +38,9 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -107,6 +111,21 @@ public class StudentController {
         return ResponseEntity.ok(studentInfoList);
     }
 
+    @GetMapping("all-account")
+    public ResponseEntity<List<GetAccountResDTO>> getAllAccount() {
+        List<Account> accounts = accountService.getAllAccounts();
+        List<GetAccountResDTO> accountInfoList = accounts
+            .stream()
+            .map(account ->
+                new GetAccountResDTO(
+                    account.getId(),
+                    account.getUsername(),
+                    account.getPassword()
+                ))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(accountInfoList);
+    }
+
     @GetMapping("get-student/{id}")
     public ResponseEntity<GetStudentInfoResDTO> getSelectedStudentInfo(
         @PathVariable("id") Long id
@@ -151,9 +170,9 @@ public class StudentController {
     }
 
     @PutMapping("/hide-student/{id}")
-    public ResponseEntity<String> hideStudent(@PathVariable("id") Long id) {
-        studentService.hiddenStudent(id); 
-        return ResponseEntity.ok().build(); 
+    public ResponseEntity<String> hideStudent(@PathVariable("id") String id) {
+        studentService.hideStudent(id); 
+        return ResponseEntity.ok("Student hidden successfully");
     }
 
     @PostMapping("/create-student")
@@ -192,7 +211,6 @@ public class StudentController {
         studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, majorID, accountId);
         System.out.println("Thành công!!!");
         
-
         return ResponseEntity.ok("Student created successfully!");
     }
 

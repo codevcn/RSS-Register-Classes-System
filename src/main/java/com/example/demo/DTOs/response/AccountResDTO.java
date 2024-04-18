@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class AccountResDTO {
 
-    public static record GetAccountResDTO(Integer id, String username, String password) {}
+    public static record GetAccountResDTO(Long id, String username, String password) {}
 
     public static record GetAccountInfoResDTO(
         Long id,
