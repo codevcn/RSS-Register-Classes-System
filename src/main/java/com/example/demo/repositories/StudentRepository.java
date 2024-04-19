@@ -60,4 +60,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         @Param("majorID") Long majorID,
         @Param("accountID") Long accountID
     );
+
+    @Query(
+        value = "SELECT rr.studentID, s.id, s.subjectCode, s.name, s.creditsCount, rs.receiptID, rs.id " +
+            "FROM ReceiptSubject rs " +
+            "INNER JOIN Subject s ON rs.subjectID = s.id " +
+            "INNER JOIN RegisterReceipt rr ON rs.receiptID = rr.id ",
+        nativeQuery = true
+    )
+    List<Object[]> getAllRegistrations();
+
 }

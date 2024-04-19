@@ -4,15 +4,18 @@ import com.example.demo.DTOs.response.StudentResDTO;
 import com.example.demo.models.Account;
 import com.example.demo.models.Major;
 import com.example.demo.models.Student;
+import com.example.demo.models.ReceiptSubject;
 import com.example.demo.repositories.AccountRepository;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.repositories.AccountRepository;
+import com.example.demo.repositories.ReceiptSubjectRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudentService {
@@ -22,6 +25,9 @@ public class StudentService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private ReceiptSubjectRepository receiptSubjectRepository;
 
     public Student getStudentInfo(@NonNull HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
@@ -53,32 +59,32 @@ public class StudentService {
         }
     }
 
-    // public Student hiddenStudent(Long id) {
-    //     Optional<Student> optionalStudent = studentRepository.findById(id);
-    //     if (optionalStudent.isPresent()) {
-    //         Student student = optionalStudent.get();
-    //         Long accountId = student.getAccount().getId();
-
-    //         student.setDeleted(true);
-    //         studentRepository.save(student);
-
-    //         Optional<Account> optionalAccount = accountRepository.findById(accountId);
-    //         if (optionalAccount.isPresent()) {
-    //             Account account = optionalAccount.get();
-    //             account.setDeleted(true);
-    //             accountRepository.save(account);
-    //         }
-
-    //         return student;
-    //     } else {
-    //         return null;
-    //     }
-    // }
     public Student hideStudent(String id) {
-        Student subject = studentRepository.findStudent(id);
-        subject.setDeleted(true);
-        return studentRepository.save(subject);
+        Student student = studentRepository.findStudent(id);
+        student.setDeleted(true);
+        return studentRepository.save(student);
     }
+
+//     public ReceiptSubject deleteCourse(Long id) {
+//         ReceiptSubject course = receiptSubjectRepository.findCourse(id);
+//         System.out.println(">>>>>>>" + id + ">>>>>>>");
+//         System.out.println(">>>>>>>" + course + ">>>>>>>");
+// //         List<Long> courseIds = receiptSubjectRepository.getAllCourseIds();
+// // for (Long courseId : courseIds) {
+// //     System.out.println("ID của course: " + courseId);
+// // }
+//         receiptSubjectRepository.deleteCourseById(id);
+//         return receiptSubjectRepository.save(course);
+//     }
+
+    @Transactional
+    public void deleteCourse(Long id) {
+        ReceiptSubject course = receiptSubjectRepository.findCourse(id);
+        System.out.println(">>>>>>>" + id + ">>>>>>>");
+        System.out.println(">>>>>>>" + course + ">>>>>>>");
+        receiptSubjectRepository.deleteCourseById(id);
+    }
+    
 
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);
@@ -86,6 +92,10 @@ public class StudentService {
 
     public Student findStudentByAccountID(Long id) {
         return studentRepository.findByAccountID(id);
+    }
+
+    public List<Object[]> getAllRegistrations() {
+        return studentRepository.getAllRegistrations();
     }
 
 }

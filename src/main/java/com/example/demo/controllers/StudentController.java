@@ -11,6 +11,7 @@ import com.example.demo.repositories.StudentRepository;
 import com.example.demo.services.StudentService;
 import com.example.demo.services.AccountService;
 import com.example.demo.DTOs.request.CreateStudentRequest;
+import com.example.demo.DTOs.request.CourseRegistrationInfor;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import com.example.demo.repositories.AccountRepository;
 import com.example.demo.repositories.StudentRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,7 +147,7 @@ public class StudentController {
         return ResponseEntity.ok(studentInfoDTO);
     }
 
-    @PutMapping("update-student/{id}")
+    @PutMapping("course-registration-infor")
     public ResponseEntity<GetStudentInfoResDTO> updateStudent(
         @PathVariable("id") Long id,
         @RequestBody StudentResDTO.GetStudentInfoResDTO updatedStudentInfo
@@ -173,6 +175,12 @@ public class StudentController {
     public ResponseEntity<String> hideStudent(@PathVariable("id") String id) {
         studentService.hideStudent(id); 
         return ResponseEntity.ok("Student hidden successfully");
+    }
+
+    @DeleteMapping("/delete-course/{id}")
+    public ResponseEntity<String> deleteCourse(@PathVariable("id") Long id) {
+        studentService.deleteCourse(id); 
+        return ResponseEntity.ok("Student delete successfully");
     }
 
     @PostMapping("/create-student")
@@ -212,6 +220,24 @@ public class StudentController {
         System.out.println("Thành công!!!");
         
         return ResponseEntity.ok("Student created successfully!");
+    }
+
+    @GetMapping("get-all-course-registration-information")
+    public ResponseEntity<List<CourseRegistrationInfor>> getAllRegistrations() {
+        List<Object[]> registrations = studentService.getAllRegistrations();
+        List<CourseRegistrationInfor> registrationList = registrations
+            .stream()
+            .map(registration -> new CourseRegistrationInfor(
+                (Integer) registration[0],
+                (Integer) registration[1],
+                (String) registration[2],
+                (String) registration[3],
+                (Integer) registration[4],
+                (Integer) registration[5],
+                (Integer) registration[6]
+            ))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(registrationList);
     }
 
 }
