@@ -65,18 +65,6 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-//     public ReceiptSubject deleteCourse(Long id) {
-//         ReceiptSubject course = receiptSubjectRepository.findCourse(id);
-//         System.out.println(">>>>>>>" + id + ">>>>>>>");
-//         System.out.println(">>>>>>>" + course + ">>>>>>>");
-// //         List<Long> courseIds = receiptSubjectRepository.getAllCourseIds();
-// // for (Long courseId : courseIds) {
-// //     System.out.println("ID của course: " + courseId);
-// // }
-//         receiptSubjectRepository.deleteCourseById(id);
-//         return receiptSubjectRepository.save(course);
-//     }
-
     @Transactional
     public void deleteCourse(Long id) {
         ReceiptSubject course = receiptSubjectRepository.findCourse(id);
@@ -96,6 +84,10 @@ public class StudentService {
 
     public List<Object[]> getAllRegistrations() {
         return studentRepository.getAllRegistrations();
+    }
+
+    public Student getStudentByUserName(String username) {
+        return studentRepository.findStudentByUserName(username);
     }
 
 }

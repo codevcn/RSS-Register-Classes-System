@@ -12,6 +12,7 @@ import com.example.demo.services.StudentService;
 import com.example.demo.services.AccountService;
 import com.example.demo.DTOs.request.CreateStudentRequest;
 import com.example.demo.DTOs.request.CourseRegistrationInfor;
+import com.example.demo.models.Major;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,11 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import com.example.demo.repositories.AccountRepository;
-import com.example.demo.repositories.StudentRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping("student")
@@ -238,6 +235,25 @@ public class StudentController {
             ))
             .collect(Collectors.toList());
         return ResponseEntity.ok(registrationList);
+    }
+
+    @GetMapping("get-student-by-username/{username}")
+    public ResponseEntity<GetStudentInfoResDTO> getSelectedStudentInfo(
+        @PathVariable("username") String username
+    ) {
+        Student student = studentService.getStudentByUserName(username);
+        GetStudentInfoResDTO studentInfoDTO = new GetStudentInfoResDTO(
+            student.getId(),
+            student.getStudentCode(),
+            student.getPhone(),
+            student.getFullName(),
+            student.getBirthday(),
+            student.getIdcard(),
+            student.getGender(),
+            student.getMajor(),
+            student.getDeleted()
+        );
+        return ResponseEntity.ok(studentInfoDTO);
     }
 
 }

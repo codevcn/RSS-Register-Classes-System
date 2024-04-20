@@ -70,4 +70,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     )
     List<Object[]> getAllRegistrations();
 
+    @Query(
+        value = "SELECT s.* FROM Student s JOIN Account a ON s.accountID = a.id WHERE a.username = ?1 AND a.deleted = 0",
+        nativeQuery = true
+    )
+    Student findStudentByUserName(String username);
+
 }
