@@ -144,7 +144,7 @@ public class StudentController {
         return ResponseEntity.ok(studentInfoDTO);
     }
 
-    @PutMapping("course-registration-infor")
+    @PutMapping("update-student/{id}")
     public ResponseEntity<GetStudentInfoResDTO> updateStudent(
         @PathVariable("id") Long id,
         @RequestBody StudentResDTO.GetStudentInfoResDTO updatedStudentInfo

@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.models.Account;
 import com.example.demo.models.Student;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

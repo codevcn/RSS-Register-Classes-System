@@ -62,6 +62,13 @@ public class StudentService {
     public Student hideStudent(String id) {
         Student student = studentRepository.findStudent(id);
         student.setDeleted(true);
+
+        Account account = student.getAccount();
+        Long accountID = account.getId();
+        Account accountToUpdate = accountRepository.findByStudentAccountID(accountID);
+        accountToUpdate.setDeleted(true);
+        accountRepository.save(accountToUpdate);
+
         return studentRepository.save(student);
     }
 

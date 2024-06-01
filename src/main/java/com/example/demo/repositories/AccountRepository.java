@@ -1,6 +1,8 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.Account;
+import com.example.demo.models.Student;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -43,5 +45,11 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
         nativeQuery = true
     )
     Long findAccountIdByUsername(@Param("username") String username);
+
+    @Query(
+        value = "SELECT * FROM Account a WHERE a.id = ?1 AND a.deleted = 0",
+        nativeQuery = true
+    )
+    Account findByStudentAccountID(Long accountID);
 
 }
