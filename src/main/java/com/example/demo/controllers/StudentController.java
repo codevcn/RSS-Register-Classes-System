@@ -206,8 +206,7 @@ public class StudentController {
         //Thêm tài khoản
         String username = request.getUsername();
         String password = request.getPassword();
-        
-        
+
         accountRepository.saveAccount(username, password);
         Long accountId = accountRepository.findAccountIdByUsername(username);
         System.out.println("accountId: " + accountId);
