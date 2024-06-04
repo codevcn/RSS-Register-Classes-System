@@ -47,6 +47,9 @@ public class Student {
     @Column(nullable = false, length = 10)
     private String gender;
 
+    @Column(nullable = false)
+    private Long year;
+
     @Column(nullable = false, length = 12)
     private String idcard;
 
@@ -70,4 +73,10 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "accountID", referencedColumnName = "id", nullable = true, unique = true)
     private Account account;
+
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "classID", nullable = false)
+    private StudentClass studentClass;
 }

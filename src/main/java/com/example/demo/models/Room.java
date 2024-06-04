@@ -17,40 +17,32 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-@Table(name = "RegisterSession")
-@JsonIgnoreProperties(value = {"subjectRegisters", "subjectSchedules"})
-public class RegisterSession {
+@Table(name = "Room")
+@JsonIgnoreProperties(value = {"subjectSchedules"})
+public class Room {
 
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Timestamp beginTime;
+    @Column(nullable = false, length = 10, unique = true)
+    private String roomCode;
 
-    @Column(nullable = false)
-    private Timestamp endTime;
-
-    @Column(nullable = false, length = 50, unique = true)
-    private String regSessCode;
+    @Column(nullable = false, length = 30)
+    private String roomType;
 
     @Column(nullable = false)
     private Timestamp createdAt;
 
     @ToString.Exclude
+    @OneToMany(mappedBy = "room")
     @JsonManagedReference
-    @OneToMany(mappedBy = "registerSession")
-    private Set<SubjectRegister> subjectRegisters;
-
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(mappedBy = "registerSession")
     private Set<SubjectSchedule> subjectSchedules;
 }

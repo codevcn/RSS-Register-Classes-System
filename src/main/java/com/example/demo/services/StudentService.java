@@ -68,6 +68,7 @@ public class StudentService {
         Account accountToUpdate = accountRepository.findByStudentAccountID(accountID);
         accountToUpdate.setDeleted(true);
         accountRepository.save(accountToUpdate);
+        System.out.println(">>>>>dung>>");
 
         return studentRepository.save(student);
     }

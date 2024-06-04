@@ -13,6 +13,7 @@ import com.example.demo.services.AccountService;
 import com.example.demo.DTOs.request.CreateStudentRequest;
 import com.example.demo.DTOs.request.CourseRegistrationInfor;
 import com.example.demo.models.Major;
+import com.example.demo.models.StudentClass;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,6 +64,7 @@ public class StudentController {
                 student.getIdcard(),
                 student.getGender(),
                 student.getMajor(),
+                student.getStudentClass(),
                 student.getDeleted()
             )
         );
@@ -83,6 +85,7 @@ public class StudentController {
                     student.getIdcard(),
                     student.getGender(),
                     student.getMajor(),
+                    student.getStudentClass(),
                     student.getDeleted()
                 ))
             .collect(Collectors.toList());
@@ -104,6 +107,7 @@ public class StudentController {
                     student.getIdcard(),
                     student.getGender(),
                     student.getMajor(),
+                    student.getStudentClass(),
                     student.getDeleted()
                 ))
             .collect(Collectors.toList());
@@ -139,6 +143,7 @@ public class StudentController {
             student.getIdcard(),
             student.getGender(),
             student.getMajor(),
+            student.getStudentClass(),
             student.getDeleted()
         );
         return ResponseEntity.ok(studentInfoDTO);
@@ -160,6 +165,7 @@ public class StudentController {
                 updatedStudent.getIdcard(),
                 updatedStudent.getPhone(),
                 updatedStudent.getMajor(),
+                updatedStudent.getStudentClass(),
                 updatedStudent.getDeleted()
             );
             return ResponseEntity.ok(updatedStudentResponse);
@@ -212,8 +218,9 @@ public class StudentController {
         String birthday = request.getBirthday(); 
         String idcard = request.getIdcard(); 
         String gender = request.getGender();
+        Long classID = request.getStudentClass().getId();
         Long majorID = request.getMajor().getId();
-        studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, majorID, accountId);
+        studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, classID, majorID, accountId);
         System.out.println("Thành công!!!");
         
         return ResponseEntity.ok("Student created successfully!");
@@ -251,6 +258,7 @@ public class StudentController {
             student.getIdcard(),
             student.getGender(),
             student.getMajor(),
+            student.getStudentClass(),
             student.getDeleted()
         );
         return ResponseEntity.ok(studentInfoDTO);

@@ -26,20 +26,22 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "Subject")
-@JsonIgnoreProperties(value = {"subjectSchedules", "receiptSubjects", "subjectRegisters"})
-public class Subject {
-
+@Table(name = "StudentClass")
+@JsonIgnoreProperties(value = {"subjectSchedules", "students"})
+public class StudentClass {
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    @Column(nullable = false, length = 20, unique = true)
-    private String subjectCode;
+    @Column(nullable = false, length = 11, unique = true)
+    String code;
 
-    @Column(nullable = false, length = 30)
-    private String name;
+    @Column(nullable = false, length = 50)
+    String name;
+
+    @Column(nullable = false)
+    private Timestamp createdAt;
 
     @ToString.Exclude
     @JsonBackReference
@@ -47,30 +49,13 @@ public class Subject {
     @JoinColumn(name = "majorID", nullable = false)
     private Major major;
 
-    @Column(nullable = false)
-    private Long creditsCount;
-
-    @Column(nullable = false)
-    private Timestamp createdAt;
-
-    @Column(nullable = false)
-    private Timestamp updatedAt;
-
-    @Column(nullable = false)
-    private Boolean deleted;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "studentClass")
+    @JsonManagedReference
+    private Set<Student> students;
 
     @ToString.Exclude
+    @OneToMany(mappedBy = "studentClass")
     @JsonManagedReference
-    @OneToMany(mappedBy = "subject")
     private Set<SubjectSchedule> subjectSchedules;
-
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(mappedBy = "subject")
-    private Set<SubjectRegister> subjectRegisters;
-
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(mappedBy = "subject")
-    private Set<ReceiptSubject> receiptSubjects;
 }

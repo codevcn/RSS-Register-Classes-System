@@ -1,6 +1,7 @@
 package com.example.demo.DTOs.response;
 
 import com.example.demo.models.Major;
+import com.example.demo.models.StudentClass;
 import java.sql.Date;
 
 public class StudentResDTO {
@@ -14,6 +15,7 @@ public class StudentResDTO {
         String idcard,
         String gender,
         Major major,
+        StudentClass studentClass,
         Boolean deleted
         //Boolean deleted
         //String accountUsername,

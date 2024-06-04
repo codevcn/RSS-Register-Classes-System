@@ -35,7 +35,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Modifying
     @Query(
         value = "INSERT INTO Account (username, password, roleID, createdAt, updatedAt, deleted) " +
-            "VALUES (:username, :password, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)",
+            "VALUES (:username, :password, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)",
         nativeQuery = true
     )
     void saveAccount(@Param("username") String username, @Param("password") String password);
