@@ -16,6 +16,6 @@ public class CreateStudentRequest {
     private String phone;
     private Major major;
     private StudentClass studentClass;
-    private String username;
-    private String password;
+    // private String username;
+    // private String password;
 }

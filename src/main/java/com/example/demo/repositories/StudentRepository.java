@@ -47,8 +47,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Transactional
     @Modifying
     @Query(
-        value = "INSERT INTO Student (studentCode, phone, fullName, birthday, gender, classID, majorID, accountID, createdAt, updatedAt, deleted, IDCard, year) " +
-        "VALUES (:studentCode, :phone, :fullName, :birthday, :gender, :classID, :majorID, :accountID, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, :idcard, YEAR(GETDATE()))",
+        value = "INSERT INTO Student (studentCode, phone, fullName, birthday, gender, classID, majorID, createdAt, updatedAt, deleted, IDCard, year) " +
+        "VALUES (:studentCode, :phone, :fullName, :birthday, :gender, :classID, :majorID, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, :idcard, YEAR(GETDATE()))",
         nativeQuery = true
     )
     void saveStudent(
@@ -59,8 +59,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         @Param("idcard") String idcard,
         @Param("gender") String gender,
         @Param("classID") Long classID,
-        @Param("majorID") Long majorID,
-        @Param("accountID") Long accountID
+        @Param("majorID") Long majorID
+        // @Param("accountID") Long accountID
     );
 
     @Query(
