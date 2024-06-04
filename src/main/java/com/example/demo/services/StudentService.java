@@ -63,12 +63,12 @@ public class StudentService {
         Student student = studentRepository.findStudent(id);
         student.setDeleted(true);
 
-        // Account account = student.getAccount();
-        // Long accountID = account.getId();
-        // Account accountToUpdate = accountRepository.findByStudentAccountID(accountID);
-        // accountToUpdate.setDeleted(true);
-        // accountRepository.save(accountToUpdate);
-        // System.out.println(">>>>>dung>>");
+        Account account = student.getAccount();
+        Long accountID = account.getId();
+        Account accountToUpdate = accountRepository.findByStudentAccountID(accountID);
+        accountToUpdate.setDeleted(true);
+        accountRepository.save(accountToUpdate);
+        System.out.println(">>>>>dung>>");
 
         return studentRepository.save(student);
     }

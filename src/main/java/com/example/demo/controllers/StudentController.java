@@ -196,20 +196,21 @@ public class StudentController {
         System.out.println("Birthday: " + request.getBirthday());
         System.out.println("ID card: " + request.getIdcard());
         System.out.println("Phone: " + request.getPhone());
+        System.out.println("Class ID: " + request.getStudentClass());
         System.out.println("Major ID: " + request.getMajor());
 
-        // System.out.println("Thông tin tài khoản:");
-        // System.out.println("Username: " + request.getUsername());
-        // System.out.println("Password: " + request.getPassword());
+        System.out.println("Thông tin tài khoản:");
+        System.out.println("Username: " + request.getUsername());
+        System.out.println("Password: " + request.getPassword());
 
         //Thêm tài khoản
-        // String username = request.getUsername();
-        // String password = request.getPassword();
+        String username = request.getUsername();
+        String password = request.getPassword();
         
         
-        // accountRepository.saveAccount(username, password);
-        // Long accountId = accountRepository.findAccountIdByUsername(username);
-        // System.out.println("accountId: " + accountId);
+        accountRepository.saveAccount(username, password);
+        Long accountId = accountRepository.findAccountIdByUsername(username);
+        System.out.println("accountId: " + accountId);
 
         //Thêm sinh viên
         String studentCode = request.getStudentCode();
@@ -220,8 +221,7 @@ public class StudentController {
         String gender = request.getGender();
         Long classID = request.getStudentClass().getId();
         Long majorID = request.getMajor().getId();
-        //studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, classID, majorID, accountId);
-        studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, classID, majorID);
+        studentRepository.saveStudent(studentCode, phone, fullName, birthday, idcard, gender, classID, majorID, accountId);
         System.out.println("Thành công!!!");
         
         return ResponseEntity.ok("Student created successfully!");
