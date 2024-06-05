@@ -78,4 +78,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     )
     Student findStudentByUserName(String username);
 
+    @Query(
+        value = "select * from Student where accountID = ?1",
+        nativeQuery = true
+    )
+    Student findByIDWhologin(Long id);
+
 }

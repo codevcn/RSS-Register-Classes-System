@@ -15,6 +15,8 @@ import com.example.demo.DTOs.request.CourseRegistrationInfor;
 import com.example.demo.models.Major;
 import com.example.demo.models.StudentClass;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @RequestMapping("student")
@@ -206,8 +209,10 @@ public class StudentController {
         //Thêm tài khoản
         String username = request.getUsername();
         String password = request.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
 
-        accountRepository.saveAccount(username, password);
+        accountRepository.saveAccount(username, hashedPassword);
         Long accountId = accountRepository.findAccountIdByUsername(username);
         System.out.println("accountId: " + accountId);
 
@@ -260,6 +265,30 @@ public class StudentController {
             student.getMajor(),
             student.getStudentClass(),
             student.getDeleted()
+        );
+        return ResponseEntity.ok(studentInfoDTO);
+    }
+
+    @GetMapping("get-student-login")
+    public ResponseEntity<GetStudentInfoResDTO> getStudentInfoLogin(Principal principal) {
+        String username = principal.getName();
+        Account StudentAccount = accountService.getAccountInfo(username);
+        Long id = StudentAccount.getId();
+        System.out.println(">>>"+username);
+        System.out.println(">>>"+id);
+        Student student = studentService.getStudentByIdWhoLogin(id);
+        System.out.println(">>>"+student);
+        StudentResDTO.GetStudentInfoResDTO studentInfoDTO = new StudentResDTO.GetStudentInfoResDTO(
+                student.getId(),
+                student.getStudentCode(),
+                student.getPhone(),
+                student.getFullName(),
+                student.getBirthday(),
+                student.getIdcard(),
+                student.getGender(),
+                student.getMajor(),
+                student.getStudentClass(),
+                student.getDeleted()
         );
         return ResponseEntity.ok(studentInfoDTO);
     }

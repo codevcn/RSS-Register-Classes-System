@@ -98,4 +98,8 @@ public class StudentService {
         return studentRepository.findStudentByUserName(username);
     }
 
+    public Student getStudentByIdWhoLogin(Long id) {
+        return studentRepository.findByIDWhologin(id);
+    }
+
 }
