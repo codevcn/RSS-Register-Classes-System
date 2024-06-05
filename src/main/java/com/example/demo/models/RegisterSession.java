@@ -52,10 +52,10 @@ public class RegisterSession {
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "registerSession")
-    private Set<SubjectSchedule> subjectSchedules;
+    private Set<RegisterReceipt> registerReceipts;
 
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "registerSession")
-    private Set<RegisterReceipt> registerReceipts;
+    private Set<SubjectSchedule> subjectSchedules;
 }

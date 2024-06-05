@@ -21,6 +21,10 @@ public class AccountService {
         return accountRepository.findByUsername(username);
     }
 
+    public List<Account> getAllAccounts() {
+        return (List<Account>) accountRepository.findAll();
+    }
+
     public boolean check_pass(Long id, String oldpass) {
         Account account = accountRepository.findByID(id);
         return passwordEncoder.matches(oldpass, account.getPassword());

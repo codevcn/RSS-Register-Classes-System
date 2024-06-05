@@ -1,8 +1,6 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,12 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +46,7 @@ public class SubjectSchedule {
 
     @Column(nullable = false, length = 30)
     private String partGroup;
+    private String partGroup;
 
     @Column(nullable = false)
     private Long dayOfWeek;
@@ -81,6 +78,11 @@ public class SubjectSchedule {
     @JsonBackReference
     private Teacher teacher;
 
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "regSessID", nullable = false)
+    private RegisterSession registerSession;
     @ToString.Exclude
     @JsonBackReference
     @ManyToOne
