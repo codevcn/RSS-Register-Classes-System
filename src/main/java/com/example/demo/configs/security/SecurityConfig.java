@@ -37,38 +37,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors ->
-                cors.configurationSource(req -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(Arrays.asList(clientProps.getHost()));
-                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                    configuration.setAllowCredentials(true);
-                    configuration.setAllowedHeaders(Arrays.asList("*"));
-                    return configuration;
-                }))
-            .authorizeHttpRequests(
-                authz ->
-                    authz
-                        .requestMatchers(
-                            "auth/login/**",
-                            "subjects/**",
-                            "student/**",
-                            "major/**",
-                            "admin/**",
-                            "account/**"
-                        )
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
-            )
+        return http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(req -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Arrays.asList(clientProps.getHost()));
+            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+            configuration.setAllowCredentials(true);
+            configuration.setAllowedHeaders(Arrays.asList("*"));
+            return configuration;
+        })).authorizeHttpRequests(
+            authz -> authz.requestMatchers("auth/login/**").permitAll().anyRequest().authenticated())
             .exceptionHandling(exHdlng -> exHdlng.authenticationEntryPoint(customAuthEntryPoint))
-            .sessionManagement(
-                ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+            .sessionManagement(ssMgmtCt -> ssMgmtCt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 
     @Bean

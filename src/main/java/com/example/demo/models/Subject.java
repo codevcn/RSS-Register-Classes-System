@@ -27,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "Subject")
-@JsonIgnoreProperties(value = { "subjectSchedules", "subjectRegisters", "receiptSubjects" })
+@JsonIgnoreProperties(value = {"subjectSchedules", "receiptSubjects", "subjectRegisters"})
 public class Subject {
 
     @Id
@@ -68,9 +68,4 @@ public class Subject {
     @JsonManagedReference
     @OneToMany(mappedBy = "subject")
     private Set<SubjectRegister> subjectRegisters;
-
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(mappedBy = "subject")
-    private Set<ReceiptSubject> receiptSubjects;
 }

@@ -30,4 +30,11 @@ public class CookieService {
         cookie.setPath("/");
         response.addCookie(cookie);
     }
+
+    public void removeCookieAtClient(@NonNull HttpServletResponse response) {
+        Cookie cookie = new Cookie(jwtProps.getAUTH_JWT_NAME(), null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
 }

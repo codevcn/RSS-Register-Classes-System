@@ -22,10 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(
-    name = "ReceiptSubject",
-    uniqueConstraints = { @UniqueConstraint(columnNames = { "receiptID", "subjectID" }) }
-)
+@Table(name = "ReceiptSubject", uniqueConstraints = {@UniqueConstraint(columnNames = {"receiptID", "subjectID"})})
 public class ReceiptSubject {
 
     @Id
@@ -42,6 +39,6 @@ public class ReceiptSubject {
     @ToString.Exclude
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "subjectID")
-    private Subject subject;
+    @JoinColumn(name = "subjectScheduleID")
+    private SubjectSchedule subjectSchedule;
 }

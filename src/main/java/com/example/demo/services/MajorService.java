@@ -13,12 +13,12 @@ public class MajorService {
     private MajorRepository majorRepository;
 
     // public List<Major> getAllMajors() {
-    //     return (List<Student>) majorRepository.findAll();
+    // return (List<Student>) majorRepository.findAll();
     // }
 
     // public Major getMajorInfo(@NonNull HttpServletRequest httpServletRequest) {
-    //     String id = httpServletRequest.getUserPrincipal().getName();
-    //     return studentRepository.findMajors(id);
+    // String id = httpServletRequest.getUserPrincipal().getName();
+    // return studentRepository.findMajors(id);
     // }
 
     public List<Major> getAllMajors() {

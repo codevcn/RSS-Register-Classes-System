@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -110,7 +111,7 @@ public class AuthController {
     }
 
     @GetMapping("check-auth")
-    public ResponseEntity<UserAuthInfoResDTO> getMethodName(Principal principal)
+    public ResponseEntity<UserAuthInfoResDTO> checkAuth(Principal principal)
         throws CustomAuthException {
         Account account = accountService.getAccountInfo(principal.getName());
         UserAuthInfoResDTO userAuthInfoResDTO;
@@ -118,22 +119,33 @@ public class AuthController {
             account.getRole().getRoleCode().toUpperCase().equals(UserRoles.ROLE_STUDENT.getValue())
         ) {
             Student studentInfo = studentService.findStudentByAccountID(account.getId());
-            userAuthInfoResDTO = new UserAuthInfoResDTO(
-                new AuthInfoResDTO(account.getRole().getRoleCode()),
-                new UserInfoResDTO(studentInfo.getFullName())
-            );
+            userAuthInfoResDTO =
+                new UserAuthInfoResDTO(
+                    new AuthInfoResDTO(account.getRole().getRoleCode()),
+                    new UserInfoResDTO(studentInfo.getFullName())
+                );
         } else if (
             account.getRole().getRoleCode().toUpperCase().equals(UserRoles.ROLE_ADMIN.getValue())
         ) {
             Admin adminInfo = adminService.findAdminByAccountID(account.getId());
-            userAuthInfoResDTO = new UserAuthInfoResDTO(
-                new AuthInfoResDTO(account.getRole().getRoleCode()),
-                new UserInfoResDTO(adminInfo.getFullName())
-            );
+            userAuthInfoResDTO =
+                new UserAuthInfoResDTO(
+                    new AuthInfoResDTO(account.getRole().getRoleCode()),
+                    new UserInfoResDTO(adminInfo.getFullName())
+                );
         } else {
             throw new CustomAuthException(AuthMessage.BAD_AUTHORITY);
         }
 
         return ResponseEntity.ok(userAuthInfoResDTO);
+    }
+
+    @PostMapping("logout-user")
+    // @PreAuthorize("hasAnyAuthority('ADMIN','STUDENT')")
+    public ResponseEntity<SuccessResDTO> LogoutUser(
+        @NonNull HttpServletResponse httpServletResponse
+    ) {
+        cookieService.removeCookieAtClient(httpServletResponse);
+        return ResponseEntity.ok(new SuccessResDTO(true));
     }
 }

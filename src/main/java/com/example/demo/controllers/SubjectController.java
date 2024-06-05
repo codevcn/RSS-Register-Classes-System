@@ -47,33 +47,19 @@ public class SubjectController {
     @GetMapping("get-subject/{id}")
     public ResponseEntity<GetSubjectResDTO> getSubject(@PathVariable("id") Long id) {
         Subject subject = subjectRepository.findSubjectbyid(id);
-        GetSubjectResDTO subjectInfoDTO = new GetSubjectResDTO(
-            subject.getId(),
-            subject.getSubjectCode(),
-            subject.getName(),
-            subject.getCreditsCount(),
-            subject.getCreatedAt(),
-            subject.getUpdatedAt(),
-            subject.getMajor(),
-            subject.getDeleted()
-        );
+        GetSubjectResDTO subjectInfoDTO = new GetSubjectResDTO(subject.getId(), subject.getSubjectCode(),
+            subject.getName(), subject.getCreditsCount(), subject.getCreatedAt(), subject.getUpdatedAt(),
+            subject.getMajor(), subject.getDeleted());
         return ResponseEntity.ok(subjectInfoDTO);
     }
 
     @PostMapping("create-subject")
     public ResponseEntity<CreateSubjectInfoResDTO> CreateSubject(
-        @RequestBody CreateSubjectInfoResDTO CreateSubjectInfo
-    ) {
+        @RequestBody CreateSubjectInfoResDTO CreateSubjectInfo) {
         Subject createsubject = subjectService.createSubject(CreateSubjectInfo);
-        CreateSubjectInfoResDTO subjectInfoDTO = new CreateSubjectInfoResDTO(
-            createsubject.getId(),
-            createsubject.getName(),
-            createsubject.getSubjectCode(),
-            createsubject.getCreditsCount(),
-            createsubject.getCreatedAt(),
-            createsubject.getUpdatedAt(),
-            createsubject.getMajor()
-        );
+        CreateSubjectInfoResDTO subjectInfoDTO = new CreateSubjectInfoResDTO(createsubject.getId(),
+            createsubject.getName(), createsubject.getSubjectCode(), createsubject.getCreditsCount(),
+            createsubject.getCreatedAt(), createsubject.getUpdatedAt(), createsubject.getMajor());
         return ResponseEntity.ok(subjectInfoDTO);
     }
 
@@ -88,40 +74,22 @@ public class SubjectController {
             }
         }
         List<GetSubjectResDTO> subjectInfoList = ListAllSubject.stream()
-            .map(
-                subject ->
-                    new GetSubjectResDTO(
-                        subject.getId(),
-                        subject.getSubjectCode(),
-                        subject.getName(),
-                        subject.getCreditsCount(),
-                        subject.getCreatedAt(),
-                        subject.getUpdatedAt(),
-                        subject.getMajor(),
-                        subject.getDeleted()
-                    )
-            )
+            .map(subject -> new GetSubjectResDTO(subject.getId(), subject.getSubjectCode(), subject.getName(),
+                subject.getCreditsCount(), subject.getCreatedAt(), subject.getUpdatedAt(), subject.getMajor(),
+                subject.getDeleted()))
             .collect(Collectors.toList());
         return ResponseEntity.ok(subjectInfoList);
     }
 
     @PutMapping("update-subject/{id}")
-    public ResponseEntity<GetSubjectResDTO> updateSubject(
-        @PathVariable("id") Long id,
-        @RequestBody SubjectResDTO.GetSubjectResDTO updatedSubjectInfo
-    ) {
+    public ResponseEntity<GetSubjectResDTO> updateSubject(@PathVariable("id") Long id,
+        @RequestBody SubjectResDTO.GetSubjectResDTO updatedSubjectInfo) {
         System.out.println("<<<" + updatedSubjectInfo);
         Subject updatedSubject = subjectService.updateSubject(id, updatedSubjectInfo);
-        GetSubjectResDTO updatedSubjectResponse = new GetSubjectResDTO(
-            updatedSubject.getId(),
-            updatedSubject.getSubjectCode(),
-            updatedSubject.getName(),
-            updatedSubject.getCreditsCount(),
-            updatedSubject.getCreatedAt(),
-            updatedSubject.getUpdatedAt(),
-            updatedSubject.getMajor(),
-            updatedSubject.getDeleted()
-        );
+        GetSubjectResDTO updatedSubjectResponse =
+            new GetSubjectResDTO(updatedSubject.getId(), updatedSubject.getSubjectCode(), updatedSubject.getName(),
+                updatedSubject.getCreditsCount(), updatedSubject.getCreatedAt(), updatedSubject.getUpdatedAt(),
+                updatedSubject.getMajor(), updatedSubject.getDeleted());
         return ResponseEntity.ok(updatedSubjectResponse);
     }
 

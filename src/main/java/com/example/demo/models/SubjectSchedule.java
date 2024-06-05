@@ -28,17 +28,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(
-    name = "SubjectSchedule",
-    uniqueConstraints = {
-        @UniqueConstraint(
-            columnNames = {
-                "beginDate", "endDate", "subjectID", "dayOfWeek", "startingSession", "teacherID"
-            }
-        )
-    }
-)
-@JsonIgnoreProperties(value = { "subjectRegisters" })
+@Table(name = "SubjectSchedule",
+    uniqueConstraints = {@UniqueConstraint(
+        columnNames = {"beginDate", "endDate", "dayOfWeek", "startingSession", "teacherID", "regSessID"})})
+@JsonIgnoreProperties(value = {"receiptSubjects"})
 public class SubjectSchedule {
 
     @Id
@@ -52,17 +45,11 @@ public class SubjectSchedule {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "subjectID", nullable = false)
-    @JsonBackReference
-    private Subject subject;
-
     @Column(nullable = false, length = 30)
     private String teamGroup;
 
     @Column(nullable = false, length = 30)
-    private String className;
+    private String partGroup;
 
     @Column(nullable = false)
     private Long dayOfWeek;
@@ -73,8 +60,20 @@ public class SubjectSchedule {
     @Column(nullable = false)
     private Long numberOfSessions;
 
-    @Column(nullable = false, length = 4)
-    private String roomName;
+    @Column(nullable = false)
+    private Timestamp createdAt;
+
+    @Column(nullable = false)
+    private Timestamp updatedAt;
+
+    @Column(nullable = false)
+    private Long slotsCount;
+
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "subjectID", nullable = false)
+    @JsonBackReference
+    private Subject subject;
 
     @ToString.Exclude
     @ManyToOne
@@ -82,14 +81,26 @@ public class SubjectSchedule {
     @JsonBackReference
     private Teacher teacher;
 
-    @Column(nullable = false)
-    private Timestamp createdAt;
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "regSessID", nullable = false)
+    private RegisterSession registerSession;
 
-    @Column(nullable = false)
-    private Timestamp updatedAt;
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "classID", nullable = false)
+    private StudentClass studentClass;
+
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "roomID", nullable = false)
+    private Room room;
 
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "subjectSchedule")
-    private Set<SubjectRegister> subjectRegisters;
+    private Set<ReceiptSubject> receiptSubjects;
 }

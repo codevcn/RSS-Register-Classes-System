@@ -21,13 +21,9 @@ public class MajorController {
     @GetMapping("get-all-major")
     public ResponseEntity<List<GetMajorInfoResDTO>> MajorOfSubject() {
         List<Major> majors = majorService.getAllMajors();
-        List<GetMajorInfoResDTO> majorList = majors
-            .stream()
-            .map(
-                major ->
-                    new GetMajorInfoResDTO(major.getId(), major.getMajorCode(), major.getName())
-            )
-            .collect(Collectors.toList());
+        List<GetMajorInfoResDTO> majorList =
+            majors.stream().map(major -> new GetMajorInfoResDTO(major.getId(), major.getMajorCode(), major.getName()))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(majorList);
     }
 }

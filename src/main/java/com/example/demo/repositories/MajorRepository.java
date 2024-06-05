@@ -15,4 +15,7 @@ public interface MajorRepository extends JpaRepository<Major, Long> {
 
     @Query(value = "select * from Major where id = ?1", nativeQuery = true)
     Major findByID(String id);
+
+    @Query(value = "select * from Major", nativeQuery = true)
+    List<Major> findMajors();
 }

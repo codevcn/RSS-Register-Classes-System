@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,12 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(
-    name = "SubjectRegister",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "studentID", "regSessID", "subjectScheduleID" })
-    }
-)
+@Table(name = "SubjectRegister")
 public class SubjectRegister {
 
     @Id
@@ -43,12 +37,6 @@ public class SubjectRegister {
     private Timestamp createdAt;
 
     @ToString.Exclude
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "studentID")
-    private Subject subject;
-
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "regSessID")
     @JsonBackReference
@@ -56,7 +44,7 @@ public class SubjectRegister {
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "subjectScheduleID")
+    @JoinColumn(name = "subjectID")
     @JsonBackReference
-    private SubjectSchedule subjectSchedule;
+    private Subject subject;
 }
