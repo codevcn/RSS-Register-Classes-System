@@ -1,6 +1,5 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.Account;
 import com.example.demo.models.Student;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "select u" + " from Student u" + " where u.id = ?1" + " and u.deleted = 0", nativeQuery = true)
@@ -51,23 +49,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         value = "SELECT s.* FROM Student s JOIN Account a ON s.accountID = a.id WHERE a.username = ?1 AND a.deleted = 0",
         nativeQuery = true)
     Student findStudentByUserName(String username);
-    
-    @Query(value = "select u" + " from Student u" + " where u.id = ?1" + " and u.deleted = 0", nativeQuery = true)
-    Student findByID(String id);
-
-    @Query(value = "select u" + " from Student u" + " where u.accountID = ?1" + " and u.deleted = 0",
-        nativeQuery = true)
-    Student findByAccountUsername(String username);
-
-    @Query(value = "select * from Account where username = ?1 and u.deleted = 0", nativeQuery = true)
-    Student findStudentInfor(String username);
-
-    @Query(value = "select *" + " from Student u" + " where u.accountID = ?1" + " and u.deleted = 0",
-        nativeQuery = true)
-    Student findByAccountID(Long accountID);
-
-    @Query("SELECT s FROM Student s WHERE s.deleted = false")
-    List<Student> findByDeletedFalse();
 
     @Transactional
     @Modifying
