@@ -63,5 +63,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT *" + " FROM Student" + " WHERE accountID = ?1" + " AND deleted = 0", nativeQuery = true)
     Student findByUsername(Long accountID);
 
-
+    @Query(value = "select * from Student where accountID = ?1", nativeQuery = true)
+    Student findByIDWhologin(Long id);
 }

@@ -60,7 +60,7 @@ import com.example.demo.repositories.SubjectScheduleRepository;
 import com.example.demo.repositories.TeacherMajorRepository;
 import com.example.demo.repositories.TeacherRepository;
 import com.example.demo.utils.exceptions.CustomBaseException;
-
+import org.springframework.dao.DataIntegrityViolationException;
 
 record TeacherAndSubject(Teacher teacher, Subject subject) {
 }
@@ -209,7 +209,7 @@ public class RegisterSessionService {
         }
         Student student = studentRepository.findByUsername(account.getId());
         if (student == null) {
-            
+
             throw new CustomBaseException("Không tìm thấy sinh viên");
         }
         StudentClass studentClass = student.getStudentClass();
@@ -291,7 +291,16 @@ public class RegisterSessionService {
         registerSession.setRegSessCode(registerSessionDTO.getRegSessCode());
         registerSession.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-        RegisterSession registerSessionCreated = registerSessionRepository.save(registerSession);
+        RegisterSession registerSessionCreated = null;
+        try {
+            registerSessionCreated = registerSessionRepository.save(registerSession);
+        } catch (Exception e) {
+            if (e instanceof DataIntegrityViolationException) {
+                throw new CustomBaseException("Trùng thông tin đợt đăng ký");
+            } else {
+                throw new CustomBaseException("Không thể khởi tạo đợt đăng ký mới");
+            }
+        }
 
         ScheduledSubjectDTO[] scheduledSubjectDTOs = addRegisterSessionDTO.getScheduledSubjectDTOs();
         for (ScheduledSubjectDTO scheduledSubject : scheduledSubjectDTOs) {

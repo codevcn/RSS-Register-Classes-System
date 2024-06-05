@@ -59,6 +59,10 @@ public class StudentService {
         }
     }
 
+    public Student getStudentByIdWhoLogin(Long id) {
+        return studentRepository.findByIDWhologin(id);
+    }
+
     public Student hideStudent(String id) {
         Student student = studentRepository.findStudent(id);
         student.setDeleted(true);
