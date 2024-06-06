@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,10 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +29,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "Student")
+@JsonIgnoreProperties(value = {"cancelRegisters"})
 public class Student {
 
     @Id
@@ -79,4 +84,9 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "classID", nullable = false)
     private StudentClass studentClass;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "student")
+    @JsonManagedReference
+    private Set<CancelRegister> cancelRegisters;
 }

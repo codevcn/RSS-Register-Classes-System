@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.DTOs.request.AddRegisterSessionDTO;
 import com.example.demo.DTOs.request.NewTermDTO;
+import com.example.demo.DTOs.request.StudentCancelRegisterDTO;
 import com.example.demo.DTOs.response.RegisterSessionDTO.GeNewTermForStudentDTO;
 import com.example.demo.DTOs.response.RegisterSessionDTO.GetClassOfMajorDTO;
 import com.example.demo.DTOs.response.RegisterSessionDTO.GetMajorResDTO;
@@ -123,10 +124,23 @@ public class RegisterSessionController {
         Principal principal) throws CustomBaseException {
         String accountUsername = principal.getName();
         if (accountUsername == null || regSessID == null) {
-            throw new CustomBaseException("ID sinh viên không thể trống!");
+            throw new CustomBaseException("Dữ liệu đầu vào không thể trống!");
         }
         ResultOfRegisterNewTermDTO registerNewTermDTO =
             registerSessionService.getResultOfNewTerm(Long.parseLong(regSessID), accountUsername);
         return ResponseEntity.ok(registerNewTermDTO);
+    }
+
+    @PostMapping("student-cancel-register")
+    public ResponseEntity<SuccessResDTO> studentCancelRegister(@Valid StudentCancelRegisterDTO studentCancelRegisterDTO,
+        Principal principal) throws CustomBaseException {
+        String accountUsername = principal.getName();
+        if (accountUsername == null) {
+            throw new CustomBaseException("Dữ liệu đầu vào không thể trống!");
+        }
+        registerSessionService.studentCancelRegister(accountUsername,
+            Long.parseLong(studentCancelRegisterDTO.getScheduleID()),
+            Long.parseLong(studentCancelRegisterDTO.getRegSessID()));
+        return ResponseEntity.ok(new SuccessResDTO(true));
     }
 }

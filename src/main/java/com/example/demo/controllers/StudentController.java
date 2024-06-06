@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @RequestMapping("student")
@@ -163,7 +164,10 @@ public class StudentController {
         String username = request.getUsername();
         String password = request.getPassword();
 
-        accountRepository.saveAccount(username, password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+
+        accountRepository.saveAccount(username, hashedPassword);
         Long accountId = accountRepository.findAccountIdByUsername(username);
         System.out.println("accountId: " + accountId);
 

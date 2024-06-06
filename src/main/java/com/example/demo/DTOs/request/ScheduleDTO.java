@@ -32,6 +32,12 @@ public class ScheduleDTO {
     @NotBlank(message = "Trường phòng học không thể trống")
     String roomCode;
 
+    @NotBlank(message = "Trường tổ không thể trống")
+    String partGroup;
+
+    @NotBlank(message = "Trường nhóm không thể trống")
+    String teamGroup;
+
     @NotBlank(message = "Trường tiết bắt đầu không thể trống")
     @Pattern(regexp = "^[0-9]+$")
     String startingSession;
@@ -43,6 +49,6 @@ public class ScheduleDTO {
     @Valid
     TeacherDTO teacher;
 
-    @Valid
-    StudentClassDTO forClass;
+    @NotBlank(message = "Trường ID lớp học không thể trống")
+    String classID;
 }

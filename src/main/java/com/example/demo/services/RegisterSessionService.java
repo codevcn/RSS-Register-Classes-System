@@ -107,10 +107,25 @@ public class RegisterSessionService {
     @Autowired
     private ReceiptSubjectRepository receiptSubjectRepository;
 
-    public ResultOfRegisterNewTermDTO getResultOfNewTerm(Long regSessID, String accountUsername)
-        throws CustomBaseException {
+    private Timestamp getCurrentTime() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    private Student getStudentByAccountUsername(String accountUsername) {
         Account account = accountRepository.findByUsername(accountUsername);
         Student student = studentRepository.findByUsername(account.getId());
+        return student;
+    }
+
+    public void studentCancelRegister(String accountUsername, Long scheduleID, Long regSessID) {
+        Student student = getStudentByAccountUsername(accountUsername);
+        RegisterReceipt registerReceipt = registerReceiptRepository.findForResultOfNewTerm(regSessID, student.getId());
+        receiptSubjectRepository.studentCancelRegister(registerReceipt.getId(), scheduleID);
+    }
+
+    public ResultOfRegisterNewTermDTO getResultOfNewTerm(Long regSessID, String accountUsername)
+        throws CustomBaseException {
+        Student student = getStudentByAccountUsername(accountUsername);
         RegisterReceipt registerReceipt = registerReceiptRepository.findForResultOfNewTerm(regSessID, student.getId());
         if (registerReceipt == null) {
             return null;
@@ -149,8 +164,7 @@ public class RegisterSessionService {
         throws CustomBaseException {
         checkForRegisterNewTerm(registerNewTermDTOs);
 
-        Account account = accountRepository.findByUsername(accountUsername);
-        Student student = studentRepository.findByUsername(account.getId());
+        Student student = getStudentByAccountUsername(accountUsername);
         int totalCredits = 0;
         int totalPayAmount = 0;
         Subject subject = null;
@@ -185,7 +199,7 @@ public class RegisterSessionService {
         registerReceipt.setTotalPayAmount(Long.parseLong(String.valueOf(totalPayAmount)));
         registerReceipt.setStudent(student);
         registerReceipt.setTotalSubjects(Long.parseLong(String.valueOf(totalSubjects)));
-        registerReceipt.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        registerReceipt.setCreatedAt(getCurrentTime());
         registerReceipt.setRegisterSession(regSess);
 
         RegisterReceipt registerReceiptCreated = registerReceiptRepository.save(registerReceipt);
@@ -209,7 +223,6 @@ public class RegisterSessionService {
         }
         Student student = studentRepository.findByUsername(account.getId());
         if (student == null) {
-
             throw new CustomBaseException("Không tìm thấy sinh viên");
         }
         StudentClass studentClass = student.getStudentClass();
@@ -289,7 +302,11 @@ public class RegisterSessionService {
         registerSession.setBeginTime(beginTime);
         registerSession.setEndTime(endTime);
         registerSession.setRegSessCode(registerSessionDTO.getRegSessCode());
-        registerSession.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        registerSession.setCreatedAt(getCurrentTime());
+        Major major = new Major();
+        major.setId(Long.parseLong(registerSessionDTO.getMajorID()));
+        registerSession.setMajor(major);
+        registerSession.setTermCode(registerSessionDTO.getTermCode());
 
         RegisterSession registerSessionCreated = null;
         try {
@@ -304,27 +321,26 @@ public class RegisterSessionService {
 
         ScheduledSubjectDTO[] scheduledSubjectDTOs = addRegisterSessionDTO.getScheduledSubjectDTOs();
         for (ScheduledSubjectDTO scheduledSubject : scheduledSubjectDTOs) {
-            for (ScheduleDTO scheduleDTO : scheduledSubject.getSchedules()) {
-                Instant beginDate_instant = Instant.ofEpochMilli(Long.parseLong(scheduleDTO.getBeginDate()));
-                LocalDate beginDate = beginDate_instant.atZone(ZoneId.systemDefault()).toLocalDate();
-                Instant endDate_instant = Instant.ofEpochMilli(Long.parseLong(scheduleDTO.getEndDate()));
-                LocalDate endDate = endDate_instant.atZone(ZoneId.systemDefault()).toLocalDate();
+            ScheduleDTO scheduleDTO = scheduledSubject.getSchedule();
+            Instant beginDate_instant = Instant.ofEpochMilli(Long.parseLong(scheduleDTO.getBeginDate()));
+            LocalDate beginDate = beginDate_instant.atZone(ZoneId.systemDefault()).toLocalDate();
+            Instant endDate_instant = Instant.ofEpochMilli(Long.parseLong(scheduleDTO.getEndDate()));
+            LocalDate endDate = endDate_instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
-                Optional<Room> fetchedRoom = roomRepository.findByRoomCode(scheduleDTO.getRoomCode());
-                Room room = null;
-                try {
-                    room = fetchedRoom.get();
-                } catch (Exception e) {
-                    throw new CustomBaseException("Không tìm thấy phòng học");
-                }
-
-                subjectScheduleRepository.create(beginDate, endDate, scheduledSubject.getSubject().getId(),
-                    Long.parseLong(scheduleDTO.getDayOfWeek()), Long.parseLong(scheduleDTO.getNumberOfSessions()),
-                    room.getId(), Long.parseLong(scheduleDTO.getStartingSession()),
-                    Long.parseLong(scheduleDTO.getSlotsCount()), scheduledSubject.getSubjectInfo().getPartGroup(),
-                    scheduledSubject.getSubjectInfo().getTeamGroup(), Long.parseLong(scheduleDTO.getForClass().getId()),
-                    scheduleDTO.getTeacher().getId(), registerSessionCreated.getId());
+            Optional<Room> fetchedRoom = roomRepository.findByRoomCode(scheduleDTO.getRoomCode());
+            Room room = null;
+            try {
+                room = fetchedRoom.get();
+            } catch (Exception e) {
+                throw new CustomBaseException("Không tìm thấy phòng học");
             }
+
+            subjectScheduleRepository.create(beginDate, endDate, scheduledSubject.getSubject().getId(),
+                Long.parseLong(scheduleDTO.getDayOfWeek()), Long.parseLong(scheduleDTO.getNumberOfSessions()),
+                room.getId(), Long.parseLong(scheduleDTO.getStartingSession()),
+                Long.parseLong(scheduleDTO.getSlotsCount()), scheduleDTO.getPartGroup(), scheduleDTO.getTeamGroup(),
+                Long.parseLong(scheduleDTO.getClassID()), scheduleDTO.getTeacher().getId(),
+                registerSessionCreated.getId());
         }
     }
 

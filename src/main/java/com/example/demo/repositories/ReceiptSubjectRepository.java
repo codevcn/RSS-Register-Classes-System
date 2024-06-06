@@ -26,4 +26,7 @@ public interface ReceiptSubjectRepository extends JpaRepository<ReceiptSubject, 
     @Query(value = "DELETE FROM ReceiptSubject WHERE id = :id")
     void deleteCourseById(@Param("id") Long id);
 
+    @Modifying
+    @Query(value = "DELETE FROM ReceiptSubject WHERE receiptID = ?1 AND subjectScheduleID = ?2", nativeQuery = true)
+    void studentCancelRegister(Long regReceiptID, Long scheduleID);
 }

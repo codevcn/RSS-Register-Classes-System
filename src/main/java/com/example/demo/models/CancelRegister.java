@@ -1,6 +1,5 @@
 package com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,29 +22,25 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "SubjectRegister")
-public class SubjectRegister {
-
+@Table(name = "CancelRegister")
+public class CancelRegister {
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long slot;
-
-    @Column(nullable = false)
-    private Timestamp createdAt;
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "studentID", nullable = false)
+    @JsonBackReference
+    private Student student;
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "regSessID")
+    @JoinColumn(name = "subjectScheduleID", nullable = false)
     @JsonBackReference
-    private RegisterSession registerSession;
+    private SubjectSchedule subjectSchedule;
 
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "subjectID")
-    @JsonBackReference
-    private Subject subject;
+    @Column(nullable = false)
+    Timestamp createdAt;
 }

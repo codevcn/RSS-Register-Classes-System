@@ -31,7 +31,7 @@ import java.util.Set;
 @Table(name = "SubjectSchedule",
     uniqueConstraints = {@UniqueConstraint(
         columnNames = {"beginDate", "endDate", "dayOfWeek", "startingSession", "teacherID", "regSessID"})})
-@JsonIgnoreProperties(value = {"receiptSubjects"})
+@JsonIgnoreProperties(value = {"receiptSubjects", "cancelRegisters"})
 public class SubjectSchedule {
 
     @Id
@@ -103,4 +103,9 @@ public class SubjectSchedule {
     @JsonManagedReference
     @OneToMany(mappedBy = "subjectSchedule")
     private Set<ReceiptSubject> receiptSubjects;
+
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(mappedBy = "subjectSchedule")
+    private Set<CancelRegister> cancelRegisters;
 }

@@ -21,4 +21,10 @@ public class RegisterSessionDTO {
 
     @NotBlank(message = "Trường thời gian kết thúc đợt đăng ký không thể trống")
     String endTime;
+
+    @NotBlank(message = "Trường mã học kì không thể trống")
+    String termCode;
+
+    @NotBlank(message = "Trường ID ngành học không thể trống")
+    String majorID;
 }
