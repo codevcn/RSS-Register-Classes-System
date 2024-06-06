@@ -103,9 +103,4 @@ public class SubjectSchedule {
     @JsonManagedReference
     @OneToMany(mappedBy = "subjectSchedule")
     private Set<ReceiptSubject> receiptSubjects;
-
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(mappedBy = "subjectSchedule")
-    private Set<CancelRegister> cancelRegisters;
 }
