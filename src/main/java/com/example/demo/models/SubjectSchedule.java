@@ -69,6 +69,9 @@ public class SubjectSchedule {
     @Column(nullable = false)
     private Long slotsCount;
 
+    @Column(nullable = false)
+    private Long slotsLeft;
+
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "subjectID", nullable = false)

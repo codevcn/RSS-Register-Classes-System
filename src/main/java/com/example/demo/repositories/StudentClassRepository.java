@@ -9,5 +9,8 @@ public interface StudentClassRepository extends JpaRepository<StudentClass, Long
 
     @Query(value = "SELECT * FROM StudentClass WHERE majorID = ?1", nativeQuery = true)
     List<StudentClass> findByMajorID(Long majorID);
+
+    @Query(value = "SELECT * FROM StudentClass WHERE code = ?1", nativeQuery = true)
+    StudentClass findByClassCode(String classCode);
 }
 

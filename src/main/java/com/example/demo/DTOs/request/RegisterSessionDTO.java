@@ -1,6 +1,7 @@
 package com.example.demo.DTOs.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,6 @@ public class RegisterSessionDTO {
     String termCode;
 
     @NotBlank(message = "Trường ID ngành học không thể trống")
+    @Pattern(regexp = "^[0-9]+$")
     String majorID;
 }

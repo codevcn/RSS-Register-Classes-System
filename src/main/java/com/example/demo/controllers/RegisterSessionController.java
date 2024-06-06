@@ -132,15 +132,14 @@ public class RegisterSessionController {
     }
 
     @PostMapping("student-cancel-register")
-    public ResponseEntity<SuccessResDTO> studentCancelRegister(@Valid StudentCancelRegisterDTO studentCancelRegisterDTO,
-        Principal principal) throws CustomBaseException {
+    public ResponseEntity<SuccessResDTO> studentCancelRegister(
+        @Valid @RequestBody StudentCancelRegisterDTO studentCancelRegisterDTO, Principal principal)
+        throws CustomBaseException {
         String accountUsername = principal.getName();
         if (accountUsername == null) {
             throw new CustomBaseException("Dữ liệu đầu vào không thể trống!");
         }
-        registerSessionService.studentCancelRegister(accountUsername,
-            Long.parseLong(studentCancelRegisterDTO.getScheduleID()),
-            Long.parseLong(studentCancelRegisterDTO.getRegSessID()));
+        registerSessionService.studentCancelRegister(accountUsername, studentCancelRegisterDTO);
         return ResponseEntity.ok(new SuccessResDTO(true));
     }
 }

@@ -50,5 +50,5 @@ public class ScheduleDTO {
     TeacherDTO teacher;
 
     @NotBlank(message = "Trường ID lớp học không thể trống")
-    String classID;
+    String forClass;
 }

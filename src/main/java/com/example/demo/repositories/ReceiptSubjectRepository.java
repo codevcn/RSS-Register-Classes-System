@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ReceiptSubjectRepository extends JpaRepository<ReceiptSubject, Long> {
     @Query(value = "SELECT * FROM ReceiptSubject WHERE receiptID = ?1", nativeQuery = true)
@@ -26,6 +27,7 @@ public interface ReceiptSubjectRepository extends JpaRepository<ReceiptSubject, 
     @Query(value = "DELETE FROM ReceiptSubject WHERE id = :id")
     void deleteCourseById(@Param("id") Long id);
 
+    @Transactional
     @Modifying
     @Query(value = "DELETE FROM ReceiptSubject WHERE receiptID = ?1 AND subjectScheduleID = ?2", nativeQuery = true)
     void studentCancelRegister(Long regReceiptID, Long scheduleID);

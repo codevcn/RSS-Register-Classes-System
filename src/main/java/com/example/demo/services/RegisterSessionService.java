@@ -18,6 +18,7 @@ import com.example.demo.DTOs.request.RegisterNewTermDTO;
 import com.example.demo.DTOs.request.RegisterSessionDTO;
 import com.example.demo.DTOs.request.ScheduleDTO;
 import com.example.demo.DTOs.request.ScheduledSubjectDTO;
+import com.example.demo.DTOs.request.StudentCancelRegisterDTO;
 import com.example.demo.DTOs.response.RegisterSessionDTO.GeNewTermForStudentDTO;
 import com.example.demo.DTOs.response.RegisterSessionDTO.GetTeacherOfMajorDTO;
 import com.example.demo.DTOs.response.RegisterSessionDTO.RegisterSessionForSearchDTO;
@@ -117,10 +118,15 @@ public class RegisterSessionService {
         return student;
     }
 
-    public void studentCancelRegister(String accountUsername, Long scheduleID, Long regSessID) {
+    public void studentCancelRegister(String accountUsername, StudentCancelRegisterDTO studentCancelRegisterDTO) {
         Student student = getStudentByAccountUsername(accountUsername);
-        RegisterReceipt registerReceipt = registerReceiptRepository.findForResultOfNewTerm(regSessID, student.getId());
-        receiptSubjectRepository.studentCancelRegister(registerReceipt.getId(), scheduleID);
+        String[] scheduleIDs = studentCancelRegisterDTO.getScheduleIDs();
+        Long regSessID = Long.parseLong(studentCancelRegisterDTO.getRegSessID());
+        for (String scheduleID : scheduleIDs) {
+            RegisterReceipt registerReceipt =
+                registerReceiptRepository.findForResultOfNewTerm(regSessID, student.getId());
+            receiptSubjectRepository.studentCancelRegister(registerReceipt.getId(), Long.parseLong(scheduleID));
+        }
     }
 
     public ResultOfRegisterNewTermDTO getResultOfNewTerm(Long regSessID, String accountUsername)
@@ -151,68 +157,77 @@ public class RegisterSessionService {
             registerReceipt.getTotalCredits(), subjectsOfResult);
     }
 
-    private void checkForRegisterNewTerm(List<RegisterNewTermDTO> registerNewTermDTOs) throws CustomBaseException {
-        Set<Long> idSet = new HashSet<>();
-        for (RegisterNewTermDTO registerNewTermDTO : registerNewTermDTOs) {
-            if (!idSet.add(Long.parseLong(registerNewTermDTO.getSubjectID()))) {
-                throw new CustomBaseException("Đăng ký trùng lặp các môn học!");
-            }
-        }
-    }
+    // private void checkForRegisterNewTerm(List<RegisterNewTermDTO> registerNewTermDTOs, Long
+    // regSessID,
+    // Student student) throws CustomBaseException {
+
+    // }
 
     public void registerNewTerm(List<RegisterNewTermDTO> registerNewTermDTOs, Long regSessID, String accountUsername)
         throws CustomBaseException {
-        checkForRegisterNewTerm(registerNewTermDTOs);
-
         Student student = getStudentByAccountUsername(accountUsername);
-        int totalCredits = 0;
-        int totalPayAmount = 0;
-        Subject subject = null;
-        for (RegisterNewTermDTO registerNewTermDTO : registerNewTermDTOs) {
-            Optional<Subject> fetchedSubject =
-                subjectRepository.findById(Long.parseLong(registerNewTermDTO.getSubjectID()));
+        RegisterReceipt fetchedRegisterReceipt =
+            registerReceiptRepository.findForResultOfNewTerm(regSessID, student.getId());
+        RegisterReceipt registerReceiptCreated = null;
+        if (fetchedRegisterReceipt == null) {
+            int totalCredits = 0;
+            int totalPayAmount = 0;
+            Subject subject = null;
+            for (RegisterNewTermDTO registerNewTermDTO : registerNewTermDTOs) {
+                Optional<Subject> fetchedSubject =
+                    subjectRepository.findById(Long.parseLong(registerNewTermDTO.getSubjectID()));
+                try {
+                    subject = fetchedSubject.get();
+                } catch (Exception e) {
+                    throw new CustomBaseException("Không tìm thấy môn học");
+                }
+                totalCredits += subject.getCreditsCount();
+                BlockOfMajor blockOfMajor = subject.getMajor().getBlockOfMajor();
+                if (blockOfMajor == null) {
+                    throw new CustomBaseException("Không tìm thấy khối ngành");
+                }
+                CreditDetail creditDetail = creditDetailRepository.findByMajorBlockID(blockOfMajor.getId());
+                Long totalCreditsOfASubject = subject.getCreditsCount() * creditDetail.getPayPerCredit();
+                totalPayAmount += totalCreditsOfASubject;
+            }
+            int totalSubjects = registerNewTermDTOs.size();
+            Optional<RegisterSession> registerSession = registerSessionRepository.findById(regSessID);
+            RegisterSession regSess = null;
             try {
-                subject = fetchedSubject.get();
+                regSess = registerSession.get();
             } catch (Exception e) {
-                throw new CustomBaseException("Không tìm thấy môn học");
+                throw new CustomBaseException("Không tìm thấy đợt đăng ký");
             }
-            totalCredits += subject.getCreditsCount();
-            BlockOfMajor blockOfMajor = subject.getMajor().getBlockOfMajor();
-            if (blockOfMajor == null) {
-                throw new CustomBaseException("Không tìm thấy khối ngành");
-            }
-            CreditDetail creditDetail = creditDetailRepository.findByMajorBlockID(blockOfMajor.getId());
-            Long totalCreditsOfASubject = subject.getCreditsCount() * creditDetail.getPayPerCredit();
-            totalPayAmount += totalCreditsOfASubject;
-        }
-        int totalSubjects = registerNewTermDTOs.size();
-        Optional<RegisterSession> registerSession = registerSessionRepository.findById(regSessID);
-        RegisterSession regSess = null;
-        try {
-            regSess = registerSession.get();
-        } catch (Exception e) {
-            throw new CustomBaseException("Không tìm thấy đơt đăng ký");
-        }
 
-        RegisterReceipt registerReceipt = new RegisterReceipt();
-        registerReceipt.setTotalCredits(Long.parseLong(String.valueOf(totalCredits)));
-        registerReceipt.setTotalPayAmount(Long.parseLong(String.valueOf(totalPayAmount)));
-        registerReceipt.setStudent(student);
-        registerReceipt.setTotalSubjects(Long.parseLong(String.valueOf(totalSubjects)));
-        registerReceipt.setCreatedAt(getCurrentTime());
-        registerReceipt.setRegisterSession(regSess);
-
-        RegisterReceipt registerReceiptCreated = registerReceiptRepository.save(registerReceipt);
+            RegisterReceipt registerReceipt = new RegisterReceipt();
+            registerReceipt.setTotalCredits(Long.parseLong(String.valueOf(totalCredits)));
+            registerReceipt.setTotalPayAmount(Long.parseLong(String.valueOf(totalPayAmount)));
+            registerReceipt.setStudent(student);
+            registerReceipt.setTotalSubjects(Long.parseLong(String.valueOf(totalSubjects)));
+            registerReceipt.setCreatedAt(getCurrentTime());
+            registerReceipt.setRegisterSession(regSess);
+            registerReceiptCreated = registerReceiptRepository.save(registerReceipt);
+        } else {
+            registerReceiptCreated = fetchedRegisterReceipt;
+        }
 
         // data for receipt subject
         for (RegisterNewTermDTO registerNewTermDTO : registerNewTermDTOs) {
+            Long scheduleID = Long.parseLong(registerNewTermDTO.getScheduleID());
             SubjectSchedule subjectSchedule = new SubjectSchedule();
-            subjectSchedule.setId(Long.parseLong(registerNewTermDTO.getScheduleID()));
+            subjectSchedule.setId(scheduleID);
             ReceiptSubject receiptSubject = new ReceiptSubject();
             receiptSubject.setReceipt(registerReceiptCreated);
             receiptSubject.setSubjectSchedule(subjectSchedule);
-
-            receiptSubjectRepository.save(receiptSubject);
+            try {
+                receiptSubjectRepository.save(receiptSubject);
+            } catch (Exception e) {
+                if (e instanceof DataIntegrityViolationException) {
+                    throw new CustomBaseException("Sinh viên đăng ký cùng lúc nhiều môn học");
+                }
+                throw new CustomBaseException("Không thể hoàn tất đăng ký môn cho sinh viên");
+            }
+            subjectScheduleRepository.subtractSlots(-1, scheduleID);
         }
     }
 
@@ -245,7 +260,7 @@ public class RegisterSessionService {
                 subjectSchedule.getStartingSession(), subjectSchedule.getNumberOfSessions(),
                 new TeacherOfNewTermDTO(teacher.getTeacherCode(), teacher.getFullName()),
                 subjectSchedule.getStudentClass().getCode(), subjectSchedule.getRoom().getRoomCode(),
-                subjectSchedule.getSlotsCount()));
+                subjectSchedule.getSlotsCount(), subjectSchedule.getSlotsLeft()));
         }
         return new GeNewTermForStudentDTO(subjectSchedules.get(0).getRegisterSession().getId(), schedules);
     }
@@ -334,13 +349,24 @@ public class RegisterSessionService {
             } catch (Exception e) {
                 throw new CustomBaseException("Không tìm thấy phòng học");
             }
+            StudentClass studentClass = studentClassRepository.findByClassCode(scheduleDTO.getForClass());
+            if (studentClass == null) {
+                throw new CustomBaseException("Không tìm thấy lớp học");
+            }
 
-            subjectScheduleRepository.create(beginDate, endDate, scheduledSubject.getSubject().getId(),
-                Long.parseLong(scheduleDTO.getDayOfWeek()), Long.parseLong(scheduleDTO.getNumberOfSessions()),
-                room.getId(), Long.parseLong(scheduleDTO.getStartingSession()),
-                Long.parseLong(scheduleDTO.getSlotsCount()), scheduleDTO.getPartGroup(), scheduleDTO.getTeamGroup(),
-                Long.parseLong(scheduleDTO.getClassID()), scheduleDTO.getTeacher().getId(),
-                registerSessionCreated.getId());
+            try {
+                subjectScheduleRepository.create(beginDate, endDate, scheduledSubject.getSubject().getId(),
+                    Long.parseLong(scheduleDTO.getDayOfWeek()), Long.parseLong(scheduleDTO.getNumberOfSessions()),
+                    room.getId(), Long.parseLong(scheduleDTO.getStartingSession()),
+                    Long.parseLong(scheduleDTO.getSlotsCount()), Long.parseLong(scheduleDTO.getSlotsCount()),
+                    scheduleDTO.getPartGroup(), scheduleDTO.getTeamGroup(), studentClass.getId(),
+                    scheduleDTO.getTeacher().getId(), registerSessionCreated.getId());
+            } catch (Exception e) {
+                if (e instanceof DataIntegrityViolationException) {
+                    throw new CustomBaseException("Không thể tạo lịch học do trùng lặp lịch học");
+                }
+                throw new CustomBaseException("Không thể tạo lịch học");
+            }
         }
     }
 

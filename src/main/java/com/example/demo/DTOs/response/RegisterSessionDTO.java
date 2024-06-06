@@ -46,7 +46,8 @@ public class RegisterSessionDTO {
 
     public static record ScheduleOfRegSessNewTermDTO(Long scheduleID, LocalDate beginDate, LocalDate endDate,
         SubjectOfNewTermDTO subject, String teamGroup, String partGroup, Long dayOfWeek, Long startingSession,
-        Long numberOfSessions, TeacherOfNewTermDTO teacher, String classCode, String roomCode, Long slotsCount) {
+        Long numberOfSessions, TeacherOfNewTermDTO teacher, String classCode, String roomCode, Long slotsCount,
+        Long slotsLeft) {
     }
 
     public static record GeNewTermForStudentDTO(Long regSessID, List<ScheduleOfRegSessNewTermDTO> schedules) {

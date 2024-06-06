@@ -13,11 +13,11 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO SubjectSchedule (beginDate, endDate, subjectID, dayOfWeek, numberOfSessions,"
-        + " roomID, startingSession, slotsCount, partGroup, teamGroup, classID, teacherID, regSessID) "
-        + "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)", nativeQuery = true)
+        + " roomID, startingSession, slotsCount, slotsLeft, partGroup, teamGroup, classID, teacherID, regSessID) "
+        + "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)", nativeQuery = true)
     void create(LocalDate beginDate, LocalDate endDate, String subjectID, Long dayOfWeek, Long numberOfSessions,
-        Long roomID, Long startingSession, Long slotsCount, String partGroup, String teamGroup, Long classID,
-        String teacherID, Long regSessID);
+        Long roomID, Long startingSession, Long slotsCount, Long slotsLeft, String partGroup, String teamGroup,
+        Long classID, String teacherID, Long regSessID);
 
     @Query(value = "SELECT * FROM SubjectSchedule WHERE regSessID = ?1 AND deleted = 0", nativeQuery = true)
     List<SubjectSchedule> findByRegSessID(@Param("regSessID") Long regSessID);
@@ -28,4 +28,9 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     @Query(value = "SELECT * FROM SubjectSchedule WHERE classID = ?1 AND regSessID IN ?2 AND deleted = 0",
         nativeQuery = true)
     List<SubjectSchedule> findByClassIDAndRegSessIDs(Long classID, List<Long> regSessIDs);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE SubjectSchedule SET slotsLeft = slotsLeft + ?1 WHERE id = ?2", nativeQuery = true)
+    void subtractSlots(int amount, Long scheduleID);
 }
